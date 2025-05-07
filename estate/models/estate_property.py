@@ -107,6 +107,11 @@ class RecurringPlan(models.Model):
        copy=False,
        default='new',
     )
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_active(self):
+       for record in self:
+          if (record.state != 'new' and record.state != 'cancelled'):
+             raise UserError("Can't delete an active property!")
 
 
 
