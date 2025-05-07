@@ -28,6 +28,17 @@
                         </div>
                      </page>
                   </notebook>
+                  <group>
+                      <field name="property_ids">
+                          <list string="Types">
+                              <field name="sequence" widget="handle"/>
+                              <field name="name"/>
+                              <field name="expected_price"/>
+                              <field name="state"/>
+                              <field name="description"/>
+                          </list>
+                      </field>
+                  </group>
                </sheet>
            </form>
        </field>
@@ -51,9 +62,9 @@
           <p class="o_view_nocontent_smiling_face">
             This is some useful help text.
           </p><p>
-	     TBD, so not useful
+        TBD, so not useful
           </p><p>
-	     And again
+        And again
           </p>
         </field>
     </record>

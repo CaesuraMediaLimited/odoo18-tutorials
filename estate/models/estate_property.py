@@ -8,7 +8,9 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
+    sequence = fields.Integer('Sequence', default=1, help="Used to order types.")
     name = fields.Char('Name', required=True)
     description = fields.Text('Description' )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -86,9 +88,11 @@ class RecurringPlan(models.Model):
        else:
           self.garden_area = None
           self.garden_orientation = None
+       '''
        return {'warning': {
                 'title': _("Warning"),
                 'message': ('This option is not supported.')}}
+       '''
 
     state = fields.Selection (
        [
