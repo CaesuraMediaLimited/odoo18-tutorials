@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class RecurringPlan(models.Model):
     _name = "estate.property"
@@ -45,11 +46,20 @@ class RecurringPlan(models.Model):
         ('check_expected_price', 'CHECK(expected_price > 0)',
          'The expected price should be above 0')
     ]
-    selling_price = fields.Float('Selling Price', readonly=True,copy=False)
+    selling_price = fields.Float('Selling Price', copy=False)
     _sql_constraints = [
         ('check_selling_price', 'CHECK(selling_price > 0)',
          'The selling price should be above 0')
     ]
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+       for record in self:
+          if (float_compare(record.selling_price, \
+                record.expected_price * 0.9, precision_rounding=5) <= 0):
+             raise ValidationError("Selling Price cannot be less than 90% of expected price")
+
+
+
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living rooms")
     facades = fields.Integer("Facades")
