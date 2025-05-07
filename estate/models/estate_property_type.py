@@ -15,8 +15,4 @@ class EstatePropertyType(models.Model):
          'The property type should be unique')
     ]
     property_ids = fields.One2many("estate.property", "property_type_id", string="Types", index=True)
-
-
-
-
-
+    offer_ids    = fields.One2many("estate.property.offer", "property_type_id", string="Offer Ids")

@@ -3,10 +3,11 @@
    <record id="estate_property_offer_view_tree" model="ir.ui.view">
        <field name="model">estate.property.offer</field>
        <field name="arch" type="xml">
-           <list string="List Name">
+           <list string="List Name" editable="bottom">
                <field name="price"/>
                <field name="partner_id"/>
                <field name="status"/>
+               <field name="property_type_id"/>
            </list>
        </field>
    </record>

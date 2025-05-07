@@ -21,3 +21,4 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id  = fields.Many2one('res.partner',     string='Partner',  index=True )
     property_id = fields.Many2one('estate.property', string='Property', index=True )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
