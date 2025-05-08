@@ -122,6 +122,4 @@ class RecurringPlan(models.Model):
           else:
              record.state = 'cancelled'
           return True
-             
-
 
