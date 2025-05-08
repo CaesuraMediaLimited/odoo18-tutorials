@@ -26,25 +26,13 @@
                   <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                   <label for="property_tag_id"/>
                   <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}" />
-                  <button name="action_do_something" type="object" string="Click Me"  icon="fa-address-card"/>
-                  <button type="action" name="%(estate_property_tag_model_menu_action)d" string="Tag Menu"/>
+                  <button name="set_property_sold" type="object" string="Sold"  icon="fa-address-card"/>
+                  <button name="set_property_cancelled" type="object" string="Cancel"  icon="fa-address-card"/>
                   <label for="best_price"/>
                   <field name="best_price"/>
                   <notebook>
                      <page string="Description">
                         <div class="row">
-                           <div class="col-6">
-                              <label for="wibble"/>
-                           </div>
-                           <div class="col-6">
-                              <field name="wibble"/>
-                           </div>
-                           <div class="col-6">
-                              <label for="wobble"/>
-                           </div>
-                           <div class="col-6">
-                              <field name="wobble"/>
-                           </div>
                            <div class="col-6">
                               <label for="property_type_id"/>
                            </div>

@@ -28,24 +28,6 @@ class RecurringPlan(models.Model):
           for this_price in record.offer_ids.mapped('price'):
              if (this_price > record.best_price):
                 record.best_price = this_price
-                
-
-    wibble = fields.Float(compute="_update_wibble", inverse="_update_wobble", string='Calculated Value')
-    wobble = fields.Float(string='Type Here')
-
-    @api.depends("wobble")
-    def _update_wibble (self):
-       for record in self:
-          record.wibble = record.wobble * 2
-    def _update_wobble (self):
-       for record in self:
-          record.wobble = record.wibble / 2
-
-    def action_do_something (self):
-       for record in self:
-          record.name="This is a new property"
-          raise UserError(_('User Error, but we will not say what it is, even though we know'))
-       return True
 
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Available Date',
@@ -118,10 +100,6 @@ class RecurringPlan(models.Model):
        copy=False,
        default='new',
     )
-    def set_state(state):
-       state = state
-
-
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_active(self):
@@ -129,5 +107,21 @@ class RecurringPlan(models.Model):
           if (record.state != 'new' and record.state != 'cancelled'):
              raise UserError("Can't delete an active property!")
 
+    def set_property_sold(self):
+       for record in self:
+          if record.state == 'cancelled':
+             raise UserError("Can't sell an deleted property!")
+          else:
+             record.state = 'sold'
+          return True
+
+    def set_property_cancelled(self):
+       for record in self:
+          if record.state == 'sold':
+             raise UserError("Can't cancel a sold property!")
+          else:
+             record.state = 'cancelled'
+          return True
+             
 
 
