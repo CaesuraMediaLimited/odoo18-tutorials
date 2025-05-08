@@ -28,6 +28,8 @@
                   <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}" />
                   <button name="action_do_something" type="object" string="Click Me"  icon="fa-address-card"/>
                   <button type="action" name="%(estate_property_tag_model_menu_action)d" string="Tag Menu"/>
+                  <label for="best_price"/>
+                  <field name="best_price"/>
                   <notebook>
                      <page string="Description">
                         <div class="row">

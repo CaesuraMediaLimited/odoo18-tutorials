@@ -8,6 +8,8 @@
                <field name="partner_id"/>
                <field name="status"/>
                <field name="property_type_id"/>
+               <field name="validity"/>
+               <field name="date_deadline"/>
            </list>
        </field>
    </record>
@@ -38,6 +40,18 @@
                            </div>
                            <div class="col-6">
                               <field name="status"/>
+                           </div>
+                           <div class="col-6">
+                              <label for="validity"/>
+                           </div>
+                           <div class="col-6">
+                              <field name="validity"/>
+                           </div>
+                           <div class="col-6">
+                              <label for="date_deadline"/>
+                           </div>
+                           <div class="col-6">
+                              <field name="date_deadline"/>
                            </div>
                         </div>
                      </page>

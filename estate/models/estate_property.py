@@ -18,6 +18,17 @@ class RecurringPlan(models.Model):
     salesperson_id = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', copy=False, string='Buyer', index=True )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", index=True)
+    best_price = fields.Float (compute="_get_best_price", string="Best Offer")
+
+    @api.depends("offer_ids.price")
+    def _get_best_price(self):
+       for record in self:
+          # max(record.offer_ids.mapped('price')) returned an empty list.
+          record.best_price = 0
+          for this_price in record.offer_ids.mapped('price'):
+             if (this_price > record.best_price):
+                record.best_price = this_price
+                
 
     wibble = fields.Float(compute="_update_wibble", inverse="_update_wobble", string='Calculated Value')
     wobble = fields.Float(string='Type Here')
@@ -107,6 +118,11 @@ class RecurringPlan(models.Model):
        copy=False,
        default='new',
     )
+    def set_state(state):
+       state = state
+
+
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_active(self):
        for record in self:
