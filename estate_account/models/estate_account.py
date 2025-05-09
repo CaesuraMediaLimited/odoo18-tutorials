@@ -3,13 +3,7 @@
 
 from odoo import fields, models
 
-
 class EstateAccount(models.Model):
-   _inherit = "estate.property"
-   _description = "Estate Property Account"
+   _name = "estate.account"
+   _description = "Estate Account"
 
-   name = fields.Char('Name', required=True)
-
-   def set_property_sold(self):
-      print ("set_property_sold overridden")
-      return super().set_property_sold()
