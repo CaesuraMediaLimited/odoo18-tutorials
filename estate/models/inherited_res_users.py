@@ -5,8 +5,10 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
+# Inherit res.users to add properties sold by the user - salesperson.
+#
 class InheritedResUsers(models.Model):
-   _inherit = "res.users"
+   _inherit     = "res.users"
    _description = "Inherited res.users"
 
    property_ids = fields.One2many(

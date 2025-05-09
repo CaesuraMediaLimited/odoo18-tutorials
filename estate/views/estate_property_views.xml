@@ -4,7 +4,7 @@
        <field name="name">estate.property.name</field>
        <field name="model">estate.property</field>
        <field name="arch" type="xml">
-           <list string="List Name" decoration-success="expected_price > 30000" decoration-warning="bedrooms > 2">
+           <list string="List Name" decoration-success="expected_price &gt; 30000" decoration-warning="bedrooms &gt; 2">
                <field name="name"/>
                <field name="postcode"/>
                <field name="bedrooms"/>
@@ -30,14 +30,14 @@
                         This is new!
                     </div>
                      <p>Expected Price : <field name="expected_price"/></p>
-                     <div t-if="record.best_price.raw_value > 0">
+                     <div t-if="record.best_price.raw_value &gt; 0">
                         Best Price : <field name="best_price"/>
                      </div>
                      <div>
                         Selling Price : <field name="selling_price"/>
                      </div>
                      <div>
-                        <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}" />
+                        <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}"/>
                      </div>
                   </div>
                </t>
@@ -55,9 +55,9 @@
                   <h1><field name="name"/></h1>
                   <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                   <label for="property_tag_id"/>
-                  <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}" />
-                  <button name="set_property_sold" type="object" string="Sold"  icon="fa-address-card"/>
-                  <button name="set_property_cancelled" type="object" string="Cancel"  icon="fa-address-card"/>
+                  <field name="property_tag_id" widget="many2many_tags" options="{'color_field': 'colour'}"/>
+                  <button name="set_property_sold" type="object" string="Sold" icon="fa-address-card"/>
+                  <button name="set_property_cancelled" type="object" string="Cancel" icon="fa-address-card"/>
                   <label for="best_price"/>
                   <field name="best_price"/>
                   <notebook>
@@ -177,7 +177,7 @@
             <field name="expected_price"/>
             <field name="living_area"/>
             <field name="state"/>
-            <filter string="Available Properties" name="available_properties" domain="['|', ('state', '=', 'offer_received'), ('state', '=', 'new')]" />
+            <filter string="Available Properties" name="available_properties" domain="['|', ('state', '=', 'offer_received'), ('state', '=', 'new')]"/>
          </search>
       </field>
    </record>
