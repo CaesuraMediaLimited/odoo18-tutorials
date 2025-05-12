@@ -6,7 +6,9 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class ResPartner(models.Model):
-    _inherit       = 'res.partner'
+    _inherit     = 'res.partner'
+    _description = "Inherited res.partner"
+
 
     contact_status = fields.Selection (
        [
@@ -16,7 +18,7 @@ class ResPartner(models.Model):
        ],
        string   = "Contact Status",
        default  = 'suspect',
-       readonly = True,
     )
+    total_est_revenue = fields.Integer('Total Est. Revenue', required=True, default=1)
 
 

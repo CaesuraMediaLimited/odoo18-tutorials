@@ -16,7 +16,9 @@
     ],
     'data'         : [
        'security/ir.model.access.csv',
-       'views/training_task_views.xml'
+       'views/training_task_views.xml',
+       'views/training_task_menus.xml',
+       'views/res_partner_views.xml'
     ],
     'demo'         : [
     ],
