@@ -20,7 +20,9 @@ class ResPartner(models.Model):
       string   = "Contact Status",
       default  = 'suspect',
    )
-   total_est_revenue = fields.Float('Total Est. Revenue', required=True, default=0.0)
+   total_est_revenue   = fields.Float    ('Total Est. Revenue', required=True, default=0.0)
+   # customer_grades_ids = fields.One2many ("res.partner.grades", "customer_grades_id", string="Customer Grades")
+   customer_grades_id  = fields.Many2many("res.partner.grades", string="Customer Grades")
 
    @api.onchange('total_est_revenue')
    def _onchange_total_est_revenue(self):
