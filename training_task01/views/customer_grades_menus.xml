@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <menuitem
+      id="customer_grades_root"
+      name="Customer Grades"
+      parent="base.menu_partner_configuration"
+      action="action_customer_grades"
+   >
+   </menuitem>
+</odoo>

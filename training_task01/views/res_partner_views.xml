@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
            <xpath expr="//field[@name='website']" position="after">
-              <field name="contact_status"/>
+              <field name="contact_status" readonly="1"/>
            </xpath>
            <xpath expr="//field[@name='website']" position="before">
               <field name="total_est_revenue"/>
