@@ -22,6 +22,28 @@ class ResPartner(models.Model):
    )
    total_est_revenue   = fields.Float    ('Total Est. Revenue', required=True, default=0.0)
    customer_grades_id  = fields.Many2many("res.partner.grades", string="Customer Grades")
+   company_contact_address_id = fields.Many2one(
+      'res.partner',
+      string="Company Contact Addresses",
+      domain="[('type', 'in', ('contact', '')), '|', ('id', '=', parent_id), ('parent_id', '=', parent_id)]"
+   )
+   @api.onchange("company_contact_address_id")
+   def _onchangeccai (self):
+      for partner in self:
+         # .id ie not .partner_id because "AttributeError: 'res.partner' object has no attribute 'partner_id'
+         # Obvs.
+         selected_contact = self.env['res.partner'].browse(partner.company_contact_address_id.id)
+         print (f"selected_contact Name : {selected_contact.name}")
+         partner.street = selected_contact.street
+         partner.street2 = selected_contact.street2
+         partner.city = selected_contact.city
+         partner.state_id = selected_contact.state_id
+         partner.country_id = selected_contact.country_id
+         partner.zip = selected_contact.zip
+         partner.phone = selected_contact.phone
+         partner.email = selected_contact.email
+         partner.website = selected_contact.website
+
 
    @api.onchange('total_est_revenue')
    def _onchange_total_est_revenue(self):
