@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from . import account_move
 from . import training_task
 from . import res_partner
-from . import account_move
 from . import customer_grades
 from . import res_users
 from . import crm_lead
+from . import sale_order

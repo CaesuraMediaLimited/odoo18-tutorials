@@ -8,6 +8,15 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 class AccountMove(models.Model):
    _inherit = 'account.move'
 
+   # Override the invoice_user_id (Salesperson) and make it depend on  this custom module's is_sales_person
+   # ~/Odoo18/odoo/addons/account/models/account_move.py
+   #
+   invoice_user_id = fields.Many2one(
+        'res.users',
+        string="Salesperson",
+        domain="[('is_sales_person', '=', True)]"
+    )
+
    def action_post(self):
       res = super(AccountMove, self).action_post()
       for move in self:
