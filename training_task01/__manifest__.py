@@ -12,7 +12,9 @@
     'depends'      : [
         'base',
         'account',
-        'contacts'
+        'contacts',
+        'crm',
+        'sale'
     ],
     'data'         : [
        'security/ir.model.access.csv',
