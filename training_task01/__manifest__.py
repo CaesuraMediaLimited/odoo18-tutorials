@@ -17,12 +17,14 @@
         'sale'
     ],
     'data'         : [
+       'security/groups.xml',
        'security/ir.model.access.csv',
        'views/training_task_views.xml',
        'views/training_task_menus.xml',
        'views/res_partner_views.xml',
        'views/customer_grades_views.xml',
-       'views/res_users_views.xml'
+       'views/res_users_views.xml',
+       'views/sale_order_view.xml'
     ],
     'demo'         : [
     ],

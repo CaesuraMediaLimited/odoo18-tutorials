@@ -10,10 +10,12 @@ class SaleOrder (models.Model):
    _description = "Sale Order Inherited"
 
    # Override the user_id (Salesperson) and make it depend on  this custom module's is_sales_person
+   # Only accessible by the people in the group_sales_person_editor group.
    #
    user_id = fields.Many2one(
         'res.users',
         string="Salesperson",
-        domain=[('is_sales_person', '=', True)] # Not a string because this is for the res.users model. Best Practice...
+        domain=[('is_sales_person', '=', True)],
+        # groups="training_task01.group_sales_person_editor"
     )
 

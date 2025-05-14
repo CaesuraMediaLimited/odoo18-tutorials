@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 training_task01.access_training_task,access_training_task,training_task01.model_training_task,base.group_user,1,1,1,1
 training_task01.access_res_partner_grades,access_res_partner_grades,training_task01.model_res_partner_grades,base.group_user,1,1,1,1
-
+access_sale_order_read_all,Read Only Sale Order,sale.model_sale_order,base.group_user,1,0,0,0
+access_sale_order_full,Full Access Sale Order,sale.model_sale_order,training_task01.group_sales_person_editor,1,1,1,1

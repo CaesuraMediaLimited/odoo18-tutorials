@@ -26,6 +26,7 @@
          </form>
       </field>
    </record>
+
    <record id="action_customer_grades" model="ir.actions.act_window">
        <field name="name">Customer Grades</field>
        <field name="res_model">res.partner.grades</field>
