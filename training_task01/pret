@@ -1,9 +1,0 @@
-mkdir -p new_views
-xmllint  views/crm_lead_view.xml              --pretty 1 --format >  new_views/crm_lead_view.xml
-xmllint  views/customer_grades_views.xml      --pretty 1 --format >  new_views/customer_grades_views.xml
-xmllint  views/res_partner_kanban_inherit.xml --pretty 1 --format >  new_views/res_partner_kanban_inherit.xml
-xmllint  views/res_partner_views.xml          --pretty 1 --format >  new_views/res_partner_views.xml
-xmllint  views/res_users_views.xml            --pretty 1 --format >  new_views/res_users_views.xml
-xmllint  views/sale_order_view.xml            --pretty 1 --format >  new_views/sale_order_view.xml
-xmllint  views/training_task_menus.xml        --pretty 1 --format >  new_views/training_task_menus.xml
-xmllint  views/training_task_views.xml        --pretty 1 --format >  new_views/training_task_views.xml
