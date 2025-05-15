@@ -26,7 +26,8 @@
        'views/res_users_views.xml',
        'views/sale_order_view.xml',
        'views/crm_lead_view.xml',
-       'data/new_user.xml'
+       'data/new_user.xml',
+       'views/res_partner_kanban_inherit.xml'
     ],
     'demo'         : [
     ],
