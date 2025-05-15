@@ -5,6 +5,10 @@ from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
+import logging
+_logger = logging.getLogger(__name__)
+
+
 class ResPartner(models.Model):
    _inherit     = 'res.partner'
    _description = "Inherited res.partner"
@@ -51,7 +55,24 @@ class ResPartner(models.Model):
          if partner.total_est_revenue and partner.contact_status == 'suspect':
             partner.contact_status = 'prospect'
 
-
-
-
+   # 6. For customers that have a credit limit, the value of the "Payment Terms" field will default to 'End of the following month'.
+   #
+   # http://localhost:8069/odoo/customers/20/res.partner/10?debug=assets
+   # ~/Odoo18/odoo/addons/account/models/partner.py
+   # property_payment_term_id          : Customer Payment Terms
+   # property_supplier_payment_term_id : Vendor Payment Terms
+   # credit_limit                      : Credit limit specific to this partner.
+   #
+   # I've added credit_limit to the View and here we set the payment Terms (customer and vendor).
+   #
+   @api.onchange("credit_limit")
+   def _onchangecl (self):
+      for partner in self:
+         if partner.credit_limit > 0.0:
+            # Safer than looking for the string 'End of the following month'.
+            #
+            payment_term = self.env.ref('account.account_payment_term_end_following_month')
+            self.property_payment_term_id          = payment_term.id
+            self.property_supplier_payment_term_id = payment_term.id
+            _logger.info('payment Terms updated to end of following month')
 

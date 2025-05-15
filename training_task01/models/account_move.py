@@ -15,7 +15,7 @@ class AccountMove(models.Model):
         'res.users',
         string="Salesperson",
         domain="[('is_sales_person', '=', True)]"
-    )
+   )
 
    def action_post(self):
       res = super(AccountMove, self).action_post()

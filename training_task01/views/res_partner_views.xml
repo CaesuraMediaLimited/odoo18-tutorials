@@ -10,6 +10,7 @@
               <field name="total_est_revenue"/>
               <field name="customer_grades_id"/>
               <field name="company_contact_address_id" invisible="is_company"/>
+              <field name="credit_limit"/>
            </xpath>
         </field>
     </record>
