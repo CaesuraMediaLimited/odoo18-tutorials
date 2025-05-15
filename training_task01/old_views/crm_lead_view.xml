@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <odoo>
   <record id="view_crm_form_sales_editor" model="ir.ui.view">
     <field name="name">crm.lead.form.salesperson.restrict</field>

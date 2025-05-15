@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-   <menuitem id="training_task_root" name="Training Task">
-       <menuitem id="training_task_first_level_menu" name="Options">
-           <menuitem id="training_task_model_menu_action" action="training_task"/>
-       </menuitem>
-   </menuitem>
+  <menuitem id="training_task_root" name="Training Task">
+    <menuitem id="training_task_first_level_menu" name="Options">
+      <menuitem id="training_task_model_menu_action" action="training_task"/>
+    </menuitem>
+  </menuitem>
 </odoo>
-
