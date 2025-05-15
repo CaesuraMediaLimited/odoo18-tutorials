@@ -24,7 +24,9 @@
        'views/res_partner_views.xml',
        'views/customer_grades_views.xml',
        'views/res_users_views.xml',
-       'views/sale_order_view.xml'
+       'views/sale_order_view.xml',
+       'views/crm_lead_view.xml',
+       'data/new_user.xml'
     ],
     'demo'         : [
     ],

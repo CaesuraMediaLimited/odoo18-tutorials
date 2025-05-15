@@ -3,3 +3,5 @@ training_task01.access_training_task,access_training_task,training_task01.model_
 training_task01.access_res_partner_grades,access_res_partner_grades,training_task01.model_res_partner_grades,base.group_user,1,1,1,1
 access_sale_order_read_all,Read Only Sale Order,sale.model_sale_order,base.group_user,1,0,0,0
 access_sale_order_full,Full Access Sale Order,sale.model_sale_order,training_task01.group_sales_person_editor,1,1,1,1
+crm_lead_user_read,crm.lead.user.read,crm.model_crm_lead,base.group_user,1,0,0,0
+crm_lead_sales_editor,crm.lead.sales.editor,crm.model_crm_lead,training_task01.group_sales_person_editor,1,1,1,1
