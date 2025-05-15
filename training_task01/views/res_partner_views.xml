@@ -12,6 +12,12 @@
               <field name="company_contact_address_id" invisible="is_company"/>
               <field name="credit_limit"/>
            </xpath>
+           <xpath expr="//field[@name='property_payment_term_id']" position="attributes">
+              <attribute name="invisible">True</attribute>
+           </xpath>
+           <xpath expr="//field[@name='invoice_sending_method']" position="after">
+              <field string="Payment Terms" name="property_payment_term_id" options="{'no_open': True, 'no_create': True}" groups="account.group_account_invoice,account.group_account_readonly"/>
+           </xpath>
         </field>
     </record>
     <record id="view_other_addresses_form" model="ir.ui.view">
