@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <!-- Counter component -->
+    <t t-name="awesome_owl.Counter">
+        <div class="p-3 border rounded m-2">
+            <h6><t t-esc="props.name"/></h6>
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <p>Counter: <t t-esc="state.value"/></p>
         </div>
     </t>
 
+    <!-- Card component -->
+    <t t-name="awesome_owl.Card">
+        <div class="card">
+           <div class="card-header">
+              <h3>Card Header <t t-esc="props.header"/></h3>
+           </div>
+           <div class="card-body">
+              <h4>Card Body <t t-esc="props.body"/></h4>
+           </div>
+           <div class="card-footer">
+              <h5>Card Footer <t t-out="props.footer"/></h5>
+              <p><t t-out="props.html"/></p>
+           </div>
+        </div>
+    </t>
+
+    <!-- Playground template -->
+    <t t-name="awesome_owl.Playground">
+        <div class="d-flex flex-wrap">
+            <Counter name="'One'"   updateCount.bind="updateCount"/>
+            <Counter name="'Two'"   updateCount.bind="updateCount"/>
+            <Counter name="'Three'" updateCount.bind="updateCount"/>
+            <Counter name="'Four'"  updateCount.bind="updateCount"/>
+        </div>
+        <p>Total count is <t t-esc="state.counter"/></p>
+        <div class="d-flex flex-wrap">
+           <Card header="'One'"   body="'One'"   footer='"Three"' />
+           <Card header="'Two'"   body="'Two'"   footer="'Three'" />
+           <Card header="'Three'" body="'Three'" footer="'Three'" />
+        </div>
+        <TestComponent />
+    </t>
 </templates>
+
