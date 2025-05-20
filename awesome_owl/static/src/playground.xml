@@ -27,15 +27,30 @@
 
     <!-- ToDo Item component -->
     <t t-name="awesome_owl.TodoItem">
-        <div class="p-3 border rounded m-2">
-           <p t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.id"/></p>
-           <p t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.description"/></p>
-           <p t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.isCompleted"/></p>
+        <div class="p-3 border rounded m-2 row" t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}">
+           <div class="col-4">
+              <t t-esc="props.id"/>
+           </div>
+           <div class="col-4">
+              <t t-esc="props.description"/>
+           </div>
+           <div class="col-4">
+              <t t-esc="props.isCompleted"/>
+           </div>
         </div>
     </t>
     <!-- ToDo List component -->
     <t t-name="awesome_owl.TodoList">
         <div class="p-3 border rounded m-2">
+           <input
+              t-ref='input_ref'
+              class="form-control mb-3"
+              type="text"
+              id="new-todo"
+              name="new-todo"
+              placeholder="Add a new task"
+              t-on-keyup="addTodo"
+           />
            <t t-foreach="todos" t-as="i" t-key="i.id">
               <TodoItem id="i.id" description="i.description" isCompleted="i.isCompleted" />
            </t>
@@ -61,6 +76,7 @@
            <h3>To Do List</h3>
            <TodoList />
         </div>
+        <MouseMove />
     </t>
 </templates>
 

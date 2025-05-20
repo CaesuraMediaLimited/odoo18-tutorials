@@ -3,10 +3,11 @@ import { Counter } from "./counter";
 import { Card } from "./card";
 import { TodoList } from "./todolist";
 import { TestComponent } from "./test_component";
+import { MouseMove } from "./mousemove";
 
 export class Playground extends Component {
     static template = "awesome_owl.Playground";
-    static components = { Counter, Card, TestComponent, TodoList };
+    static components = { Counter, Card, TestComponent, TodoList, MouseMove };
 
     setup() {
         this.state = useState({ counter: 0 });
