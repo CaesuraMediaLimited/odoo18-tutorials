@@ -23,5 +23,19 @@ export class TodoList extends Component {
       ]);
       */
    }
+   toggleDone (id) {
+      console.log ("TodoList : id : ", id);
+      const todo = this.todos.find((t) => t.id === id);
+      if (todo) {
+         todo.isCompleted = !todo.isCompleted;
+      }
+   }
+   removeTodo (id) {
+      console.log ("TodoList removeTodo id : ", id);
+      const index = this.todos.findIndex(todo => todo.id === id);
+      if (index !== -1) {
+        this.todos.splice(index, 1);
+      }
+   }
 }
 

@@ -13,14 +13,16 @@
     <t t-name="awesome_owl.Card">
         <div class="card">
            <div class="card-header">
-              <h3>Card Header <t t-esc="props.header"/></h3>
+              <button t-on-click="toggleOpen">Open/Close</button>
+              <t t-slot="header" />
            </div>
            <div class="card-body">
-              <h4>Card Body <t t-esc="props.body"/></h4>
+              <div t-if="open.open">
+                 <t t-slot="body" />
+              </div>
            </div>
            <div class="card-footer">
-              <h5>Card Footer <t t-out="props.footer"/></h5>
-              <p><t t-out="props.html"/></p>
+              <t t-slot="footer" />
            </div>
         </div>
     </t>
@@ -28,14 +30,28 @@
     <!-- ToDo Item component -->
     <t t-name="awesome_owl.TodoItem">
         <div class="p-3 border rounded m-2 row" t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}">
-           <div class="col-4">
+           <div class="col-2">
+              <input
+                 type="checkbox"
+                 class="m-1"
+                 id="done-checkbox"
+                 name="done-checkbox"
+                 title="Mark as done"
+                 t-att-checked="props.isCompleted"
+                 t-on-change="toggle"
+              />
+           </div>
+           <div class="col-3">
               <t t-esc="props.id"/>
            </div>
-           <div class="col-4">
+           <div class="col-3">
               <t t-esc="props.description"/>
            </div>
-           <div class="col-4">
+           <div class="col-3">
               <t t-esc="props.isCompleted"/>
+           </div>
+           <div class="col-1">
+              <span class="fa fa-remove" t-on-click="removeThis" />
            </div>
         </div>
     </t>
@@ -52,7 +68,13 @@
               t-on-keyup="addTodo"
            />
            <t t-foreach="todos" t-as="i" t-key="i.id">
-              <TodoItem id="i.id" description="i.description" isCompleted="i.isCompleted" />
+              <TodoItem
+                 id="i.id"
+                 description="i.description"
+                 isCompleted="i.isCompleted"
+                 toggleDone.bind="toggleDone"
+                 removeTodo.bind="removeTodo"
+              />
            </t>
         </div>
     </t>
@@ -67,16 +89,25 @@
         </div>
         <p>Total count is <t t-esc="state.counter"/></p>
         <div class="d-flex flex-wrap">
-           <Card header="'One'"   body="'One'"   footer='"Three"' />
-           <Card header="'Two'"   body="'Two'"   footer="'Three'" />
-           <Card header="'Three'" body="'Three'" footer="'Three'" />
+           <Card>
+              <t t-set-slot="header">Counter One</t>
+              <t t-set-slot="body"><Counter name="'One'" updateCount.bind="updateCount"/></t>
+              <t t-set-slot="footer">footer one</t>
+           </Card>
+           <Card>
+              <t t-set-slot="header">Counter Two</t>
+              <t t-set-slot="body"><Counter name="'Two'" updateCount.bind="updateCount"/></t>
+              <t t-set-slot="footer">footer two</t>
+           </Card>
         </div>
         <TestComponent />
         <div>
            <h3>To Do List</h3>
            <TodoList />
         </div>
+        <!--
         <MouseMove />
+        -->
     </t>
 </templates>
 
