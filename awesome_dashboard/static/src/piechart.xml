@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.PieChart">
+       <div>
+          <canvas id="tshirtChart"></canvas>
+       </div>
+       <div>
+          <p>Small : <t t-esc="props.small" /></p>
+          <p>Medium : <t t-esc="props.medium" /></p>
+          <p>Extra Large : <t t-esc="props.extraLarge" /></p>
+       </div>
+    </t>
+
+</templates>

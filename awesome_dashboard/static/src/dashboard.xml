@@ -43,6 +43,18 @@
                        <t t-set-slot="body"><t t-esc="stats.stats.avTshirt" /></t>
                     </DashboardItem>
                  </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Pie Chart</t>
+                       <t t-set-slot="body">
+                          <PieChart
+                             small="stats.stats.orders_by_size.s"
+                             medium="stats.stats.orders_by_size.m"
+                             extraLarge="stats.stats.orders_by_size.xl"
+                          />
+                       </t>
+                    </DashboardItem>
+                 </div>
               </div>
            </div>
         </Layout>

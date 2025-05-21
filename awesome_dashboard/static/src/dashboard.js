@@ -7,6 +7,7 @@ import { rpc } from "@web/core/network/rpc";
 import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboarditem";
+import { PieChart } from "./piechart";
 
 class AwesomeDashboard extends Component {
     static template   = "awesome_dashboard.AwesomeDashboard";
@@ -16,12 +17,16 @@ class AwesomeDashboard extends Component {
     static components = {
         Layout,
         DashboardItem,
+        PieChart,
     };
     setup() {
-        this.action = useService("action");
-        this.stats  = useState({ stats: {} });
+        this.action       = useService("action");
+        this.statsService = useService("awesome_dashboard.statistics");
+        this.stats        = useState({ stats: {} });
+
         onWillStart(async () => {
-           this.stats.stats = await rpc("/awesome_dashboard/statistics");
+           // this.stats.stats = await rpc("/awesome_dashboard/statistics");
+           this.stats.stats  = await this.statsService.loadStatistics();
            console.log ("this.stats.stats : ", this.stats.stats);
 
            // { "average_quantity": 5, "average_time": 105, "nb_cancelled_orders": 36, "nb_new_orders": 195,
@@ -34,8 +39,6 @@ class AwesomeDashboard extends Component {
            this.stats.stats.avTshirt = totalTShirts / Object.keys(this.stats.stats.orders_by_size).length;
        })
     }
-
-
     async openCustomers() {
       this.action.doAction("base.action_partner_form");
     }
@@ -54,4 +57,4 @@ class AwesomeDashboard extends Component {
 
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("actions" ).add("awesome_dashboard.dashboard",  AwesomeDashboard);
