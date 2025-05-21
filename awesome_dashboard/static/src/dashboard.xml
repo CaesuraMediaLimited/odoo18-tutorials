@@ -2,7 +2,50 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="display">
+           <div class="container-fluid">
+              <button class="btn button-primary" t-on-click="openCustomers">Customers</button>
+              <button class="btn button-primary" t-on-click="openLeads">Leads</button>
+              <div class="row">
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Average Quantity</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.average_quantity" /></t>
+                    </DashboardItem>
+                 </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Cancelled Orders</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.nb_cancelled_orders" /></t>
+                    </DashboardItem>
+                 </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Average Time</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.average_time" /></t>
+                    </DashboardItem>
+                 </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Total Amount</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.total_amount" /></t>
+                    </DashboardItem>
+                 </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">New Orders</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.nb_new_orders" /></t>
+                    </DashboardItem>
+                 </div>
+                 <div class="col-4">
+                    <DashboardItem size="2">
+                       <t t-set-slot="header">Average T Shirt sales</t>
+                       <t t-set-slot="body"><t t-esc="stats.stats.avTshirt" /></t>
+                    </DashboardItem>
+                 </div>
+              </div>
+           </div>
+        </Layout>
     </t>
 
 </templates>
