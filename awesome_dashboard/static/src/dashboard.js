@@ -26,7 +26,7 @@ class AwesomeDashboard extends Component {
 
         onWillStart(async () => {
            // this.stats.stats = await rpc("/awesome_dashboard/statistics");
-           this.stats.stats  = await this.statsService.loadStatistics();
+           this.stats.stats  = await this.statsService.stats; // Updates state every N milliseconds.
            console.log ("this.stats.stats : ", this.stats.stats);
 
            // { "average_quantity": 5, "average_time": 105, "nb_cancelled_orders": 36, "nb_new_orders": 195,
