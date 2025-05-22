@@ -7,9 +7,13 @@ import { rpc } from "@web/core/network/rpc";
 import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboarditem";
-import { PieChart } from "./piechart";
-import { StatsCard } from "./statscard";
-import items from "./dashboard_items";
+import dashboardRegistry  from "./dashboardregistry";
+
+// Now from registry ...
+// import { PieChart } from "./piechart";
+// import { StatsCard } from "./statscard";
+// import items from "./dashboard_items";
+
 
 class AwesomeDashboard extends Component {
     static template   = "awesome_dashboard.AwesomeDashboard";
@@ -19,14 +23,18 @@ class AwesomeDashboard extends Component {
     static components = {
         Layout,
         DashboardItem,
-        PieChart,
-        StatsCard,
+        // PieChart, Now from registry ...
+        // StatsCard, Now from registry ...
     };
     setup() {
         this.action       = useService("action");
         this.statsService = useService("awesome_dashboard.statistics");
         this.stats        = useState({ stats: {} });
-        this.items        = items;
+
+        // this.items        = items;
+        this.items        = dashboardRegistry.getEntries();
+        console.log ("this.items : ", this.items);
+        // this.items        = Array.from(dashboardRegistry).map(([, item]) => item);
 
         onWillStart(async () => {
            // this.stats.stats = await rpc("/awesome_dashboard/statistics");

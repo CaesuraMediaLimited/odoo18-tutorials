@@ -6,36 +6,19 @@
            <div class="container-fluid">
               <button class="btn button-primary" t-on-click="openCustomers">Customers</button>
               <button class="btn button-primary" t-on-click="openLeads">Leads</button>
-
               <hr />
               <div class="row">
-                 <t t-foreach="items" t-as="item" t-key="item.id">
+                 <t t-foreach="items" t-as="item" t-key="item[0]">
                     <div class="col-4">
-                       <p><t t-esc="item.description" /></p>
-                       <DashboardItem size="item.size || 1">
-                          <t t-set="itemProp" t-value="item.props ? item.props(stats.stats) : {'data': statistics}"/>
-                          <t t-component="item.Component" t-props="itemProp" />
+                       <p><t t-esc="item[1].description" /></p>
+                       <DashboardItem size="item[1].size || 1">
+                          <t t-set="itemProp" t-value="item[1].props ? item[1].props(stats.stats) : {'data': stats.stats}"/>
+                          <t t-component="item[1].Component" t-props="itemProp" />
                        </DashboardItem>
                     </div>
                  </t>
               </div>
               <hr />
-
-              <!--
-              <div class="row">
-                 <div class="col-4">
-                 </div>
-                 <div class="col-4">
-                    <PieChart
-                       small="stats.stats.orders_by_size.s"
-                       medium="stats.stats.orders_by_size.m"
-                       extraLarge="stats.stats.orders_by_size.xl"
-                    />
-                 </div>
-                 <div class="col-4">
-                 </div>
-              </div>
-              -->
            </div>
         </Layout>
     </t>

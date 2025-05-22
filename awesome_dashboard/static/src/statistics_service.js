@@ -11,8 +11,8 @@ import { reactive } from "@odoo/owl";
 const memoizedLoadStatistics = memoize(async () => {
    return await rpc("/awesome_dashboard/statistics");
 });
-// const N = 10 * 60 * 60 * 1000; // 10 Minutes
-const N = 10000; // 10 seconds
+const N = 10 * 60 * 60 * 1000; // 10 Minutes
+//const N = 10000; // 10 seconds
 export const statsService = {
    start() {
       const stats       = reactive({});
