@@ -1,6 +1,7 @@
 // Daahboard contents as a list,  closely bound to the statistics that come from the server.
 //
 import { StatsCard } from "./statscard";
+import { PieChart } from "./piechart";
 const items = [
    {
       id          : "average_quantity",
@@ -62,11 +63,10 @@ const items = [
          value    : data.avTshirt,
       }),
    },
-   /*
    {
       id          : "pie_chart",
       description : "Orders by T-Shirt Size in a nice Pie Chart",
-      Component   : StatsCard,
+      Component   : PieChart,
       size        : 2,
       props       : (data) => ({
          title    : "Pie Chart",
@@ -77,6 +77,35 @@ const items = [
          }
       }),
    },
+   {
+      id          : "pie_chart2",
+      description : "Orders by T-Shirt Size in a nice Pie Chart - 2",
+      Component   : PieChart,
+      size        : 3,
+      props       : (data) => ({
+         title    : "Pie Chart - 2",
+         value    : {
+            small      : data.orders_by_size.s,
+            medium     : data.orders_by_size.m,
+            extraLarge : data.orders_by_size.xl,
+         }
+      }),
+   },
+   {
+      id          : "pie_chart3",
+      description : "Orders by T-Shirt Size in a nice Pie Chart - 3",
+      Component   : PieChart,
+      size        : 3,
+      props       : (data) => ({
+         title    : "Pie Chart - 3",
+         value    : {
+            small      : data.orders_by_size.s,
+            medium     : data.orders_by_size.m,
+            extraLarge : data.orders_by_size.xl,
+         }
+      }),
+   },
+   /*
    {
       id          : "generic_default",
       description : "Generic Default",

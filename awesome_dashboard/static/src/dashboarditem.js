@@ -2,6 +2,7 @@
 
 import { Component } from "@odoo/owl";
 import { StatsCard } from "./statscard";
+import { PieChart } from "./piechart";
 
 export class DashboardItem extends Component {
     static template   = "awesome_dashboard.DashboardItem";

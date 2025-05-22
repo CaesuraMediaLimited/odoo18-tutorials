@@ -3,12 +3,12 @@
 
     <t t-name="awesome_dashboard.PieChart">
        <div>
-          <canvas id="tshirtChart"></canvas>
+          <canvas t-att-id="canvasId"></canvas>
        </div>
        <div>
-          <p>Small : <t t-esc="props.small" /></p>
-          <p>Medium : <t t-esc="props.medium" /></p>
-          <p>Extra Large : <t t-esc="props.extraLarge" /></p>
+          <p>Small : <t t-esc="props.value.small" /></p>
+          <p>Medium : <t t-esc="props.value.medium" /></p>
+          <p>Extra Large : <t t-esc="props.value.extraLarge" /></p>
        </div>
     </t>
 

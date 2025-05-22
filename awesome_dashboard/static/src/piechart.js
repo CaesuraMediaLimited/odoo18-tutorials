@@ -5,14 +5,15 @@ import { loadJS } from '@web/core/assets';
 
 export class PieChart extends Component {
     static template   = "awesome_dashboard.PieChart";
-    // "m": 58, "s": 46, "xl": 73
     static props      = {
-       medium     : {type : Number},
-       small      : {type : Number},
-       extraLarge : {type : Number},
+       title : {type : String, optional : true},
+       value : {type : Object                 },
     };
     setup() {
-       this.chart = null;
+
+       this.chart    = null;
+       this.canvasId = `pieChartCanvas_${Math.random().toString(36).substr(2, 9)}`;
+       console.log ("PieChart loaded : props, this.canvasId : ", this.props, this.canvasId);
        onWillStart(async () => {
           await loadJS ('/web/static/lib/Chart/Chart.js');
        });
@@ -21,14 +22,14 @@ export class PieChart extends Component {
        //
        useEffect((el) => {
           if (!this.chart) {
-             const ctx = document.getElementById('tshirtChart');
+             const ctx  = document.getElementById(this.canvasId);
              this.chart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['Small', 'Medium', 'Extra Large',],
                     datasets: [{
-                      label: 'T-Shirt Sales',
-                      data: [this.props.small, this.props.medium, this.props.extraLarge],
+                      label: this.props.title ? this.props.title : 'T-Shirt Sales',
+                      data: [this.props.value.small, this.props.value.medium, this.props.value.extraLarge],
                       borderWidth: 1
                     }]
                   },
@@ -43,13 +44,13 @@ export class PieChart extends Component {
           // Update with new values using .update() in Chart.js from updated values from server.
           //
           } else {
-             this.chart.data.datasets[0].data = [this.props.small, this.props.medium, this.props.extraLarge];
+             this.chart.data.datasets[0].data = [this.props.value.small, this.props.value.medium, this.props.value.extraLarge];
              this.chart.update();
           }
 
        // onChange - in React it is just [], but Owl likes a function () => ...
        //
-       },() => [this.props.small, this.props.medium, this.props.extraLarge]);
+       },() => [this.props.value.small, this.props.value.medium, this.props.value.extraLarge]);
 
        onMounted (async () => {
        });
