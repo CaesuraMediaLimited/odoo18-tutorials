@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.StatsCard">
+       <div class="card">
+           <div class="card-body">
+              <t t-if="props.title" t-slot="header">
+                 <t t-esc="props.title" />
+              </t>
+           </div>
+           <div class="card-body">
+              <t t-slot="body"><t t-esc="props.value" /></t> 
+           </div>
+        </div>
+    </t>
+
+</templates>

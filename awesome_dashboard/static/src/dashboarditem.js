@@ -1,12 +1,17 @@
 /** @odoo-module **/
 
 import { Component } from "@odoo/owl";
+import { StatsCard } from "./statscard";
 
 export class DashboardItem extends Component {
     static template   = "awesome_dashboard.DashboardItem";
     static props      = {
        size : {type : Number, optional : true, default : 1}
     }
+    static components = {
+        StatsCard,
+    };
+
     setup() {
        console.log("DashboardItem mounted");
     }

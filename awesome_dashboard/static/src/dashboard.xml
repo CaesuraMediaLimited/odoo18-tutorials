@@ -6,54 +6,32 @@
            <div class="container-fluid">
               <button class="btn button-primary" t-on-click="openCustomers">Customers</button>
               <button class="btn button-primary" t-on-click="openLeads">Leads</button>
+
+              <hr />
+              <div class="row">
+                 <t t-foreach="items" t-as="item" t-key="item.id">
+                    <div class="col-4">
+                       <p><t t-esc="item.description" /></p>
+                       <DashboardItem size="item.size || 1">
+                          <t t-set="itemProp" t-value="item.props ? item.props(stats.stats) : {'data': statistics}"/>
+                          <t t-component="item.Component" t-props="itemProp" />
+                       </DashboardItem>
+                    </div>
+                 </t>
+              </div>
+              <hr />
+
               <div class="row">
                  <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Average Quantity</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.average_quantity" /></t>
-                    </DashboardItem>
                  </div>
                  <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Cancelled Orders</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.nb_cancelled_orders" /></t>
-                    </DashboardItem>
+                    <PieChart
+                       small="stats.stats.orders_by_size.s"
+                       medium="stats.stats.orders_by_size.m"
+                       extraLarge="stats.stats.orders_by_size.xl"
+                    />
                  </div>
                  <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Average Time</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.average_time" /></t>
-                    </DashboardItem>
-                 </div>
-                 <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Total Amount</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.total_amount" /></t>
-                    </DashboardItem>
-                 </div>
-                 <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">New Orders</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.nb_new_orders" /></t>
-                    </DashboardItem>
-                 </div>
-                 <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Average T Shirt sales</t>
-                       <t t-set-slot="body"><t t-esc="stats.stats.avTshirt" /></t>
-                    </DashboardItem>
-                 </div>
-                 <div class="col-4">
-                    <DashboardItem size="2">
-                       <t t-set-slot="header">Pie Chart</t>
-                       <t t-set-slot="body">
-                          <PieChart
-                             small="stats.stats.orders_by_size.s"
-                             medium="stats.stats.orders_by_size.m"
-                             extraLarge="stats.stats.orders_by_size.xl"
-                          />
-                       </t>
-                    </DashboardItem>
                  </div>
               </div>
            </div>

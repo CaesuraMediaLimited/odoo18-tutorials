@@ -2,14 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.DashboardItem">
-       <div class="card" t-att-style="style()">
-           <div class="card-body">
-              <t t-slot="header" />
-           </div>
-           <div class="card-body">
-              <t t-slot="body" />
-           </div>
-        </div>
+       <!-- {children} in React -->
+       <t t-slot="default" />
     </t>
 
 </templates>

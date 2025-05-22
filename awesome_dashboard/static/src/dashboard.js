@@ -8,6 +8,8 @@ import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboarditem";
 import { PieChart } from "./piechart";
+import { StatsCard } from "./statscard";
+import items from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template   = "awesome_dashboard.AwesomeDashboard";
@@ -18,11 +20,13 @@ class AwesomeDashboard extends Component {
         Layout,
         DashboardItem,
         PieChart,
+        StatsCard,
     };
     setup() {
         this.action       = useService("action");
         this.statsService = useService("awesome_dashboard.statistics");
         this.stats        = useState({ stats: {} });
+        this.items        = items;
 
         onWillStart(async () => {
            // this.stats.stats = await rpc("/awesome_dashboard/statistics");
