@@ -53,6 +53,19 @@ export class PieChart extends Component {
        },() => [this.props.value.small, this.props.value.medium, this.props.value.extraLarge]);
 
        onMounted (async () => {
+
+          // Add an event handler to the chart.
+          // https://www.chartjs.org/docs/latest/developers/api.html#getelementsateventformode-e-mode-options-usefinalposition
+          //
+          document.getElementById(this.canvasId).addEventListener("click", (evt) => {
+             const points = this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+             if (points.length) {
+                 const firstPoint = points[0];
+                 const label = this.chart.data.labels[firstPoint.index];
+                 const value = this.chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+                 console.log ("label, value : ", label, value );
+             }
+          });
        });
     }
 }

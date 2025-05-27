@@ -20,9 +20,17 @@ import { SettingsDialog } from "./settingsdialog";
 
 class AwesomeDashboard extends Component {
     static template   = "awesome_dashboard.AwesomeDashboard";
+
+    // Default ones not used but gives an error with debug on : 
+    //
     static props      = {
-       controlPanel   : {},
+       action: Object,
+       actionId: Number,
+       updateActionState: Function,
+       className: { type: String, optional: true },
+       controlPanel: { type: Object, optional: true },
     }
+
     static components = {
         Layout,
         DashboardItem,
