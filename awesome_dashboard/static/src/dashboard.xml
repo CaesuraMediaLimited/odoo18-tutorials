@@ -6,6 +6,10 @@
            <div class="container-fluid">
               <button class="btn button-primary" t-on-click="openCustomers">Customers</button>
               <button class="btn button-primary" t-on-click="openLeads">Leads</button>
+              <button class="btn btn-light"      t-on-click="openDialog">
+                 Settings
+              </button>
+
               <hr />
               <div class="row">
                  <t t-foreach="items" t-as="item" t-key="item[0]">

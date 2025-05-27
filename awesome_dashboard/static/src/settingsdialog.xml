@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog size="'md'" title="'Dashboard Settings'">
+            <div class="p-3">
+                <t t-foreach="props.dashboardItems" t-as="item" t-key="item[1].id">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" t-att-id="item[1].id"/>
+                        <label class="form-check-label" t-att-for="item[1].id">
+                            <t t-esc="item[1].description"/>
+                        </label>
+                    </div>
+                </t>
+                <div class="mt-3">
+                    <button class="btn btn-primary" t-on-click="closeDialog">Close</button>
+                </div>
+            </div>
+        </Dialog>
+    </t>
+</templates>
+

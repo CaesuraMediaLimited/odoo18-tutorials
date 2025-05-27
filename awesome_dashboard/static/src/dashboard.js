@@ -8,6 +8,9 @@ import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboarditem";
 import dashboardRegistry  from "./dashboardregistry";
+// import { Dialog } from "@web/core/dialog/dialog";
+import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { SettingsDialog } from "./settingsdialog";
 
 // Now from registry ...
 // import { PieChart } from "./piechart";
@@ -25,10 +28,12 @@ class AwesomeDashboard extends Component {
         DashboardItem,
         // PieChart, Now from registry ...
         // StatsCard, Now from registry ...
+        SettingsDialog,
     };
     setup() {
         this.action       = useService("action");
         this.statsService = useService("awesome_dashboard.statistics");
+        this.dialog       = useService("dialog");
         this.stats        = useState({ stats: {} });
 
         // this.items        = items;
@@ -50,6 +55,17 @@ class AwesomeDashboard extends Component {
            });
            this.stats.stats.avTshirt = totalTShirts / Object.keys(this.stats.stats.orders_by_size).length;
        })
+    }
+    openDialog () {
+       console.log ("this.items : ", this.items);
+       this.dialog.add(SettingsDialog, {dashboardItems : this.items, close : () => {}});
+       /*
+       this.dialog.add(AlertDialog, {
+          title: _t("Alert dialog title"),
+          body : _t("Alert dialog body")
+       });
+       */
+
     }
     async openCustomers() {
       this.action.doAction("base.action_partner_form");
