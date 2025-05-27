@@ -36,13 +36,27 @@ class AwesomeDashboard extends Component {
         this.dialog       = useService("dialog");
         this.stats        = useState({ stats: {} });
 
-        // this.items        = items;
-        this.items        = dashboardRegistry.getEntries();
-        console.log ("this.items : ", this.items);
-        // this.items        = Array.from(dashboardRegistry).map(([, item]) => item);
+        // List of dashboard items could be in localStorage.
+        //
+        let storedList;
+        try {
+           const keys = JSON.parse(localStorage.getItem("dashboardList"));
+           if (!Array.isArray (keys)) {
+              throw (new Error ("Not JSON or stored"));
+           }
+           storedList = keys.map(key => [key, dashboardRegistry.get(key)]).filter(([k, def]) => def);
+           console.log ("storedList OK : ", storedList, keys);
+        } catch (err) {
+           storedList = dashboardRegistry.getEntries();
+           console.log ("storedList NOT OK : ", storedList, err);
+        }
+        this.items        = useState(storedList);
 
         onWillStart(async () => {
+
+           // Was : 
            // this.stats.stats = await rpc("/awesome_dashboard/statistics");
+           //
            this.stats.stats  = await this.statsService.stats; // Updates state every N milliseconds.
            console.log ("this.stats.stats : ", this.stats.stats);
 
@@ -57,15 +71,21 @@ class AwesomeDashboard extends Component {
        })
     }
     openDialog () {
-       console.log ("this.items : ", this.items);
-       this.dialog.add(SettingsDialog, {dashboardItems : this.items, close : () => {}});
-       /*
-       this.dialog.add(AlertDialog, {
-          title: _t("Alert dialog title"),
-          body : _t("Alert dialog body")
+       this.dialog.add(SettingsDialog, {
+          dashboardItems : this.items,
+          close: () => {},
+          onSave: (selectedIds) => {
+             console.log("User selected items:", selectedIds);
+             this.items.splice(
+                0,
+                this.items.length,
+                ...this.items.filter(([key]) => selectedIds.includes(key))
+             );
+             // Add to localStorage. Native JS/Web API.
+             //
+             localStorage.setItem ("dashboardList", JSON.stringify(selectedIds));
+          },
        });
-       */
-
     }
     async openCustomers() {
       this.action.doAction("base.action_partner_form");

@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 
 export class SettingsDialog extends Component {
@@ -8,11 +8,28 @@ export class SettingsDialog extends Component {
     static props = {
         dashboardItems: Array,
         close: Function,
+        onSave : Function,
     };
     static displayName = "Dashboard Settings";
 
     setup () {
-       console.log ("SettingsDialog called.");
+       this.checked = useState(new Set(this.props.dashboardItems.map(([key]) => key)));
+    }
+
+    // Arrow notation keeps "this."
+    //
+    toggleCheckbox = (itemId) => {
+        console.log ("toggleCheckbox : itemId : ", itemId);
+        if (this.checked.has(itemId)) {
+            this.checked.delete(itemId);
+        } else {
+            this.checked.add(itemId);
+        }
+    }
+
+    saveAndClose() {
+        this.props.onSave([...this.checked]); // Convert Set to Array
+        this.props.close();
     }
 
     closeDialog() {
