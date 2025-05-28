@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   
+    <t t-name="awesome_clicker.AwesomeClicker" owl="1">
+        <Layout className="'o_clicker h-100'" display="display">
+           <div class="container-fluid">
+              <p>Hello World</p>
+           </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_clicker.ClickerSystray" owl="1">
+       <div class="container-fluid">
+          <div class="row">
+             <div class="col-7">
+                Clicks: <t t-esc="state.count" />
+             </div>
+             <div class="col-5">
+                <button id="button" class="btn button-primary" t-on-click="updateCount">
+                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
+                </button>
+             </div>
+          </div>
+       </div>
+    </t>
+
+</templates>
+
