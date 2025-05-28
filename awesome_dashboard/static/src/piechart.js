@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { Component, onWillStart, onMounted, useEffect } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 import { loadJS } from '@web/core/assets';
 
 export class PieChart extends Component {
@@ -11,6 +12,7 @@ export class PieChart extends Component {
     };
     setup() {
 
+       this.action   = useService ("action");
        this.chart    = null;
        this.canvasId = `pieChartCanvas_${Math.random().toString(36).substr(2, 9)}`;
        console.log ("PieChart loaded : props, this.canvasId : ", this.props, this.canvasId);
@@ -60,10 +62,20 @@ export class PieChart extends Component {
           document.getElementById(this.canvasId).addEventListener("click", (evt) => {
              const points = this.chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
              if (points.length) {
-                 const firstPoint = points[0];
-                 const label = this.chart.data.labels[firstPoint.index];
-                 const value = this.chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-                 console.log ("label, value : ", label, value );
+                const firstPoint = points[0];
+                const label = this.chart.data.labels[firstPoint.index];
+                const value = this.chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+                console.log ("label, value : ", label, value );
+                /* This needs the dashboard to be a full custom module (/models/dashboard.py etc) , so leave until later on 
+                this.action.doAction({
+                   type: "ir.actions.act_window",
+                   name: `Orders - Size ${label.toUpperCase()}`,
+                   res_model: "awesome_dashboard.dashboard",
+                   view_mode: "list",
+                   target: "current",
+                   domain: [["tshirt_size", "=", label]],
+                });
+                */
              }
           });
        });

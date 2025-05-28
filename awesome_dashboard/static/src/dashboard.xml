@@ -13,7 +13,7 @@
               <hr />
               <div class="row">
                  <t t-foreach="items" t-as="item" t-key="item[0]">
-                    <div class="col-4">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                        <p><t t-esc="item[1].description" /></p>
                        <DashboardItem size="item[1].size || 1">
                           <t t-set="itemProp" t-value="item[1].props ? item[1].props(stats.stats) : {'data': stats.stats}"/>
@@ -26,5 +26,4 @@
            </div>
         </Layout>
     </t>
-
 </templates>
