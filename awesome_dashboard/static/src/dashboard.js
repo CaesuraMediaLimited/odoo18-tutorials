@@ -8,7 +8,6 @@ import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboarditem";
 import dashboardRegistry  from "./dashboardregistry";
-// import { Dialog } from "@web/core/dialog/dialog";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { SettingsDialog } from "./settingsdialog";
 
@@ -58,9 +57,21 @@ class AwesomeDashboard extends Component {
            storedList = dashboardRegistry.getEntries();
            console.log ("storedList NOT OK : ", storedList, err);
         }
-        this.items        = useState(storedList);
+
+        // Now get the settings from the server instead of localStorage.
+        //
+        // this.items        = useState(storedList);
+        this.items        = useState(dashboardRegistry.getEntries());
 
         onWillStart(async () => {
+
+           // Settings from the server.
+           //
+           let response = await rpc("/awesome_dashboard/load_settings");
+           console.log ("Loaded settings from server : ", response);
+           if (response.settings && Array.isArray(response.settings)) {
+              this.items = response.settings.map(key => [key, dashboardRegistry.get(key)]).filter(([k, def]) => def);
+           }
 
            // Was : 
            // this.stats.stats = await rpc("/awesome_dashboard/statistics");
@@ -82,7 +93,7 @@ class AwesomeDashboard extends Component {
        this.dialog.add(SettingsDialog, {
           dashboardItems : this.items,
           close: () => {},
-          onSave: (selectedIds) => {
+          onSave: async (selectedIds) => {
              console.log("User selected items:", selectedIds);
              this.items.splice(
                 0,
@@ -92,6 +103,10 @@ class AwesomeDashboard extends Component {
              // Add to localStorage. Native JS/Web API.
              //
              localStorage.setItem ("dashboardList", JSON.stringify(selectedIds));
+
+             // Save to server.
+             //
+             await rpc("/awesome_dashboard/save_settings", { selectedIds });
           },
        });
     }
@@ -110,7 +125,6 @@ class AwesomeDashboard extends Component {
             ],
         });
     }
-
 }
 
 registry.category("actions" ).add("awesome_dashboard.dashboard",  AwesomeDashboard);

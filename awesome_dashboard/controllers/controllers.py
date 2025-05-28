@@ -2,6 +2,7 @@
 
 import logging
 import random
+import json
 
 from odoo import http
 from odoo.http import request
@@ -33,4 +34,19 @@ class AwesomeDashboard(http.Controller):
             },
             'total_amount': random.randint(100, 1000)
         }
+
+    @http.route('/awesome_dashboard/save_settings', type='json', auth='user')
+    def save_dashboard_settings(self, selectedIds):
+        user = request.env.user
+        user.dashboard_config = json.dumps(selectedIds)
+        return {'status': 'ok'}
+
+    @http.route('/awesome_dashboard/load_settings', type='json', auth='user')
+    def load_dashboard_settings(self):
+        user = request.env.user
+        if user.dashboard_config:
+           return {'settings' : json.loads(user.dashboard_config), 'status': 'ok'}
+        else:
+           return {'status': 'ok'}
+
 
