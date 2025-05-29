@@ -6,6 +6,9 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 
 export class AwesomeClicker extends Component {
+
+    // Hello World atm
+    //
     static template   = "awesome_clicker.AwesomeClicker";
 
     // Default ones not used but gives an error with debug on : 

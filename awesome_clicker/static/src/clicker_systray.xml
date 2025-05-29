@@ -5,7 +5,7 @@
        <div class="container-fluid">
           <div class="row">
              <div class="col-4">
-                Clicks: <t t-esc="state.clicks" />
+                Clicks: <ClickValue value="clicker.state.clicks" />
              </div>
              <div class="col-4">
                 <button id="button" class="btn button-primary" t-on-click="updateCount">
