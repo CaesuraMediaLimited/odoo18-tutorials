@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   
+    <t t-name="awesome_clicker.ClickerSystray" owl="1">
+       <div class="container-fluid">
+          <div class="row">
+             <div class="col-4">
+                Clicks: <t t-esc="state.clicks" />
+             </div>
+             <div class="col-4">
+                <button id="button" class="btn button-primary" t-on-click="updateCount">
+                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
+                </button>
+             </div>
+             <div class="col-4">
+                <button id="button2" class="btn button-primary" t-on-click="openClientAction">
+                   Open
+                </button>
+             </div>
+          </div>
+       </div>
+    </t>
+
+</templates>
+

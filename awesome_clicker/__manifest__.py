@@ -22,7 +22,8 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_clicker/static/src/**/*',
+           'awesome_clicker/static/src/**/*.js',
+           'awesome_clicker/static/src/**/*.xml',
         ],
 
     },

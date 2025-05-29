@@ -9,20 +9,5 @@
         </Layout>
     </t>
 
-    <t t-name="awesome_clicker.ClickerSystray" owl="1">
-       <div class="container-fluid">
-          <div class="row">
-             <div class="col-7">
-                Clicks: <t t-esc="state.count" />
-             </div>
-             <div class="col-5">
-                <button id="button" class="btn button-primary" t-on-click="updateCount">
-                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
-                </button>
-             </div>
-          </div>
-       </div>
-    </t>
-
 </templates>
 
