@@ -9,8 +9,8 @@ export const clickerService = {
          console.log ("clickerService : increment : ", inc, state.clicks);
       }
       return {
-         state,
-         increment,
+          state,
+          increment,
       }
    }
 }

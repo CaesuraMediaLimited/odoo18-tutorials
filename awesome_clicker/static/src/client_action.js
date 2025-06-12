@@ -30,9 +30,34 @@ export class ClientAction extends Component {
        // this.clickerService = useService("awesome_clicker.service");
        // this.state          = useState(this.clickerService.state);
        this.clicker        = useClicker();
+       this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
     }
     addTen () {
-       this.clicker.increment (5000);
+       this.clicker.increment (100);
+       if (this.clicker.state.clicks > 1000) {
+          this.state.level = 1;
+       }
+    }
+    buyBots () {
+       if (this.state.level > 0) {
+          this.state.clickBots++;
+          if (!this.state.timerGoing) {
+             this.state.timerGoing = true;
+
+             // () => notation keeps "this", function () {...} doesn't
+             //
+             setInterval (() => {
+                this.clicker.increment(10 * this.state.clickBots);
+             }, 10000);
+          }
+       }
+    }
+    canBuyClickBots () {
+       if (this.state.level > 0) {
+          return "";
+       } else {
+          return "disabled";
+       }
     }
 }
 registry.category("actions" ).add("awesome_clicker.client_action",  ClientAction);
