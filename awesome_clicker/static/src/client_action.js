@@ -4,8 +4,8 @@ import { Component, useState, onWillStart, useExternalListener } from "@odoo/owl
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
-import { useClicker } from "./use_clicker";
-import { ClickValue } from "./clickvalue";
+// import { useClicker } from "./use_clicker";
+// import { ClickValue } from "./clickvalue";
 
 export class ClientAction extends Component {
     static template   = "awesome_clicker.ClientAction";
@@ -22,17 +22,19 @@ export class ClientAction extends Component {
 
     static components = {
        Layout,
-       ClickValue,
+       // ClickValue,
     }
 
     setup () {
        console.log ("ClientAction loaded");
        // this.clickerService = useService("awesome_clicker.service");
        // this.state          = useState(this.clickerService.state);
-       this.clicker        = useClicker();
-       this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
+       // this.clicker        = useClicker();
+       this.clicker           = useState(useService("awesome_clicker.service"));
+       // this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
     }
-    addTen () {
+    /*
+    addHundred () {
        this.clicker.increment (100);
        if (this.clicker.state.clicks > 1000) {
           this.state.level = 1;
@@ -59,5 +61,6 @@ export class ClientAction extends Component {
           return "disabled";
        }
     }
+    */
 }
 registry.category("actions" ).add("awesome_clicker.client_action",  ClientAction);

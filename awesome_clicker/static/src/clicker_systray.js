@@ -4,8 +4,8 @@ import { Component, useState, onWillStart, useExternalListener } from "@odoo/owl
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
-import { useClicker } from "./use_clicker";
-import { ClickValue } from "./clickvalue";
+// import { useClicker } from "./use_clicker";
+// import { ClickValue } from "./clickvalue";
 
 // Systray Component.
 //
@@ -13,7 +13,7 @@ export class ClickerSystray extends Component {
     static template = "awesome_clicker.ClickerSystray";
 
     static components = {
-       ClickValue,
+       // ClickValue,
     }
 
     setup () {
@@ -21,7 +21,8 @@ export class ClickerSystray extends Component {
        this.action         = useService("action");
        // this.clickerService = useService("awesome_clicker.service");
        // this.state          = useState(this.clickerService.state);
-       this.clicker        = useClicker();
+       // this.clicker        = useClicker();
+       this.clicker        = useState(useService("awesome_clicker.service"));
 
        useExternalListener(document.body, "click", (ev) => {
           if (ev.target.id == "button" || ev.target.id == "icon") {
@@ -29,10 +30,6 @@ export class ClickerSystray extends Component {
           }
           this.clicker.increment (1);
        });
-    }
-
-    updateCount () {
-       this.clicker.increment (1);
     }
 
     openClientAction() {

@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { Component, useState, onWillStart, useExternalListener } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 

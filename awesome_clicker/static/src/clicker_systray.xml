@@ -5,10 +5,10 @@
        <div class="container-fluid">
           <div class="row">
              <div class="col-4">
-                Clicks: <ClickValue value="clicker.state.clicks" />
+                Clicks : <span t-esc="clicker.clicks"/>
              </div>
              <div class="col-4">
-                <button id="button" class="btn button-primary" t-on-click="updateCount">
+                <button id="button" class="btn button-primary" t-on-click="clicker.increment">
                    <i id="icon" style="font-size:20px" class="fa fa-plus"/>
                 </button>
              </div>
