@@ -1,6 +1,8 @@
-import { Reactive } from "@web/core/utils/reactive";
+import { Reactive   } from "@web/core/utils/reactive";
 import { useService } from "@web/core/utils/hooks";
-import { EventBus } from "@odoo/owl";
+import { EventBus   } from "@odoo/owl";
+import { rewards    } from "./click_rewards";
+import { choose     } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor (model, config, data, options) {
@@ -142,6 +144,33 @@ export class ClickerModel extends Reactive {
        }
     }
 
+    getReward = () => {
+        const currentLevel = this.level;
+        console.log("Getting random reward for level:", currentLevel);
+
+        const applicableRewards = rewards.filter(reward => {
+            const hasMinLevel = reward.minLevel !== undefined;
+            const hasMaxLevel = reward.maxLevel !== undefined;
+
+            // Check if current level meets minLevel condition
+            const meetsMin = !hasMinLevel || currentLevel >= reward.minLevel;
+            // Check if current level meets maxLevel condition
+            const meetsMax = !hasMaxLevel || currentLevel <= reward.maxLevel;
+
+            return meetsMin && meetsMax;
+        });
+
+        if (applicableRewards.length === 0) {
+            console.log("No applicable rewards found for level:", currentLevel);
+            return null; // No rewards found for the current level
+        }
+
+        // Select a random reward from the applicable ones
+        const selectedReward = choose(applicableRewards);
+
+        console.log("Selected reward:", selectedReward.description);
+        return selectedReward;
+    }
 
     destroy = () => {
        console.log ("ClickerModel : destroy called");
