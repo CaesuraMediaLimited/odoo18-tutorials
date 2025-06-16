@@ -35,15 +35,15 @@ export class ClickerModel extends Reactive {
         this.clicks += amount * this.power;
         console.log ("ClickerModel : increment called : this.clicks : ", this.clicks);
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED ) {
-            this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); // Trigger event with data
+            this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); 
             console.log("MILESTONE_1k triggered from model!");
         }
         if (this.clicks >= this.MILESTONE_5K_THRESHOLD && !this._LEVEL_TWO_NOTIFIED ) {
-            this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); // Trigger event with data
+            this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); 
             console.log("MILESTONE_5k triggered from model!");
         }
         if (this.clicks >= this.MILESTONE_100K_THRESHOLD && !this._LEVEL_THREE_NOTIFIED ) {
-            this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); // Trigger event with data
+            this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); 
             console.log("MILESTONE_100k triggered from model!");
         }
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
@@ -64,7 +64,7 @@ export class ClickerModel extends Reactive {
         if (this.level > 1) {
             this.increment (5000);
         } else {
-            this.increment(500); //this.increment (amount) did not work for some reason.
+            this.increment(500); 
         }
         console.log ("Adding some : this.clicks :", this.clicks);
     }
@@ -171,6 +171,52 @@ export class ClickerModel extends Reactive {
         console.log("Selected reward:", selectedReward.description);
         return selectedReward;
     }
+    applyRandomReward = (reward) => {
+        if (reward) {
+            reward.apply(this);
+            this.bus.trigger("reward_applied", { description: reward.description });
+        }
+    }
+
+    triggerRandomRewardPopup = (notificationService, actionService) => { // Pass services as args
+        const reward = this.getReward();
+        if (!reward) {
+            console.log("No reward applicable for current level.");
+            return;
+        }
+
+        const dismissNotification = notificationService.add(
+            `A wild reward appeared: ${reward.description}!`,
+            {
+                sticky: true,
+                type: 'info',
+                className: 'o_clicker_reward_notification',
+                buttons: [
+                    {
+                        name: "Collect",
+                        onClick: () => {
+                            console.log("Collect button clicked for reward:", reward.description);
+                            reward.apply(this);
+                            dismissNotification(); 
+                            actionService.doAction({
+                               type   : "ir.actions.client",
+                               tag    : "awesome_clicker.client_action",
+                               target : "new",
+                               name   : "Clicker",
+                            });
+                        },
+                    },
+                    {
+                        name: "Dismiss",
+                        onClick: () => {
+                            console.log("Dismiss button clicked for reward:", reward.description);
+                            dismissNotification(); 
+                        },
+                    },
+                ],
+            }
+        );
+    };
 
     destroy = () => {
        console.log ("ClickerModel : destroy called");
