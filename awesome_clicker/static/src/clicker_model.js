@@ -29,8 +29,8 @@ export class ClickerModel extends Reactive {
 
     // Arrow notation throughout to keep "this" in this context.
     //
-    increment = () => {
-        this.clicks += this.power;
+    increment = (amount) => {
+        this.clicks += amount * this.power;
         console.log ("ClickerModel : increment called : this.clicks : ", this.clicks);
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED ) {
             this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); // Trigger event with data
@@ -60,35 +60,11 @@ export class ClickerModel extends Reactive {
 
     addHundred = () => {
         if (this.level > 1) {
-            this.clicks += 50000;
+            this.increment (5000);
         } else {
-            this.clicks += 500; // this.increment (amount) did not work for some reason.
+            this.increment(500); //this.increment (amount) did not work for some reason.
         }
-        if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED) { 
-            this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); // Trigger event with data
-            console.log("MILESTONE_1k triggered from model!");
-        }
-        if (this.clicks >= this.MILESTONE_5K_THRESHOLD && !this._LEVEL_TWO_NOTIFIED) {
-            this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); // Trigger event with data
-            console.log("MILESTONE_5k triggered from model!");
-        }
-        if (this.clicks >= this.MILESTONE_100K_THRESHOLD && !this._LEVEL_THREE_NOTIFIED) {
-            this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); // Trigger event with data
-            console.log("MILESTONE_100k triggered from model!");
-        }
-        if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
-           this.level = 1;
-           this._LEVEL_ONE_NOTIFIED = true;
-        }
-        if (this.clicks >= this.MILESTONE_5K_THRESHOLD) {
-           this.level = 2;
-           this._LEVEL_TWO_NOTIFIED = true;
-        }
-        if (this.clicks >= this.MILESTONE_100K_THRESHOLD) {
-           this.level = 3;
-           this._LEVEL_THREE_NOTIFIED = true;
-        }
-        console.log ("Adding 500 : this.clicks :", this.clicks);
+        console.log ("Adding some : this.clicks :", this.clicks);
     }
 
     buyBots = () => {
