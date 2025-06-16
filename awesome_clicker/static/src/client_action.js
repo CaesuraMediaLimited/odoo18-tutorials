@@ -42,6 +42,13 @@ export class ClientAction extends Component {
                 message: "Congratulations! You reached 1000 clicks!",
             });
         });
+       useBus(this.clicker.bus, "MILESTONE_5k", (ev) => {
+            console.log("ClientAction: MILESTONE_5k received!", ev.detail);
+            effectService.add({
+                type: "rainbow_man",
+                message: "Congratulations! You reached 5000 clicks!",
+            });
+        });
     }
     /*
     addHundred () {

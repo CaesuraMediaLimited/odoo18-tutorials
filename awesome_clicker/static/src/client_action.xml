@@ -3,7 +3,6 @@
    
     <t t-name="awesome_clicker.ClientAction" owl="1">
         <div class="container-fluid">
-           <p>Client Action</p>
            <p>Clicks : <span t-esc="clicker.clicks"/></p>
            <button class="btn" t-on-click="clicker.addHundred">
               <i id="icon" style="font-size:20px" class="fa fa-plus"/>
@@ -11,12 +10,35 @@
            <hr />
            <div>
               <h2>Bots</h2>
-              <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
-              <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
+              <div class="row">
+                 <div class="col-6">
+                    <div class="card">
+                       <div class="card-header">
+                          <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
+                          <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
+                       </div>
+                       <div class="card-body">
+                           <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
+                              Buy ClickBot (1000 clicks)
+                           </button>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-6">
+                    <div class="card">
+                       <div class="card-header">
+                          <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
+                          <p t-if="clicker.level > 1">You can now buy Big clickbots! Each Big bot costs 5000 clicks.</p>
+                       </div>
+                       <div class="card-body">
+                           <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
+                              Buy BigClickBot (5000 clicks)
+                           </button>
+                       </div>
+                    </div>
+                 </div>
+              </div>
            </div>
-           <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
-              Buy ClickBot (1000 clicks)
-           </button>
         </div>
     </t>
 
