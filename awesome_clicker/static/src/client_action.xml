@@ -12,6 +12,7 @@
            <div>
               <h2>Bots</h2>
               <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
+              <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
            </div>
            <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
               Buy ClickBot (1000 clicks)

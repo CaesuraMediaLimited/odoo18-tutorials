@@ -3,7 +3,8 @@ import { reactive     } from "@odoo/owl";
 import { ClickerModel } from "./clicker_model";
 
 export const clickerService = {
-   start() {
+   start(env) {
+
       const clicker = new ClickerModel();
 
       // Register a cleanup function to destroy the model when the service stops
@@ -12,7 +13,9 @@ export const clickerService = {
       //
       registry.category("services").add("awesome_clicker.cleanup_model", {
          start() {
-             return () => clicker.destroy(); // Return a function to be called on service stop
+             return () => {
+                clicker.destroy();
+             }
          },
       });
 

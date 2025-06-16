@@ -1,9 +1,10 @@
 /** @odoo-module **/
 
 import { Component, useState, onWillStart, useExternalListener } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useBus } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
+
 // import { useClicker } from "./use_clicker";
 // import { ClickValue } from "./clickvalue";
 
@@ -32,6 +33,15 @@ export class ClientAction extends Component {
        // this.clicker        = useClicker();
        this.clicker           = useState(useService("awesome_clicker.service"));
        // this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
+
+       const effectService    = useService("effect");
+       useBus(this.clicker.bus, "MILESTONE_1k", (ev) => {
+            console.log("ClientAction: MILESTONE_1k received!", ev.detail);
+            effectService.add({
+                type: "rainbow_man",
+                message: "Congratulations! You reached 1000 clicks!",
+            });
+        });
     }
     /*
     addHundred () {
