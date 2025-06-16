@@ -11,7 +11,7 @@
            <div>
               <h2>Bots</h2>
               <div class="row">
-                 <div class="col-6">
+                 <div class="col-4">
                     <div class="card">
                        <div class="card-header">
                           <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
@@ -24,7 +24,7 @@
                        </div>
                     </div>
                  </div>
-                 <div class="col-6">
+                 <div class="col-4">
                     <div class="card">
                        <div class="card-header">
                           <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
@@ -33,6 +33,19 @@
                        <div class="card-body">
                            <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
                               Buy BigClickBot (5000 clicks)
+                           </button>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-4">
+                    <div class="card">
+                       <div class="card-header">
+                          <p><t t-esc="clicker.power"/> multiplier</p>
+                          <p t-if="clicker.level > 3">You can now buy a Power Multiplier</p>
+                       </div>
+                       <div class="card-body">
+                           <button class="btn btn-primary" t-on-click="clicker.buyPower" t-att-disabled="clicker.canBuyPower()">
+                              Buy Power
                            </button>
                        </div>
                     </div>

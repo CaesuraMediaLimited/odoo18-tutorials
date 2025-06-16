@@ -12,11 +12,14 @@ export class ClickerModel extends Reactive {
         this._timerGoing   = false;
         this._intervalID   = 0;
         this.botMultiplier = 10;
+        this.power         = 1;
         this.interval      = 10000;
         this.MILESTONE_1K_THRESHOLD = 1000;
         this.MILESTONE_5K_THRESHOLD = 5000;
+        this.MILESTONE_100K_THRESHOLD = 100000;
         this._LEVEL_ONE_NOTIFIED    = false;
         this._LEVEL_TWO_NOTIFIED    = false;
+        this._LEVEL_THREE_NOTIFIED  = false;
         this.bus           = new EventBus();
         this.setup(config, data, options);
     }
@@ -27,7 +30,7 @@ export class ClickerModel extends Reactive {
     // Arrow notation throughout to keep "this" in this context.
     //
     increment = () => {
-        this.clicks++;
+        this.clicks += this.power;
         console.log ("ClickerModel : increment called : this.clicks : ", this.clicks);
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED ) {
             this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); // Trigger event with data
@@ -37,18 +40,30 @@ export class ClickerModel extends Reactive {
             this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); // Trigger event with data
             console.log("MILESTONE_5k triggered from model!");
         }
-        if (this.clicks > this.MILESTONE_1K_THRESHOLD) {
+        if (this.clicks >= this.MILESTONE_100K_THRESHOLD && !this._LEVEL_THREE_NOTIFIED ) {
+            this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); // Trigger event with data
+            console.log("MILESTONE_100k triggered from model!");
+        }
+        if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
            this.level = 1;
            this._LEVEL_ONE_NOTIFIED = true;
         }
-        if (this.clicks > this.MILESTONE_5K_THRESHOLD) {
+        if (this.clicks >= this.MILESTONE_5K_THRESHOLD) {
            this.level = 2;
            this._LEVEL_TWO_NOTIFIED = true;
+        }
+        if (this.clicks >= this.MILESTONE_100K_THRESHOLD) {
+           this.level = 3;
+           this._LEVEL_THREE_NOTIFIED = true;
         }
     }
 
     addHundred = () => {
-        this.clicks += 500; // this.increment (amount) did not work for some reason.
+        if (this.level > 1) {
+            this.clicks += 50000;
+        } else {
+            this.clicks += 500; // this.increment (amount) did not work for some reason.
+        }
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED) { 
             this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); // Trigger event with data
             console.log("MILESTONE_1k triggered from model!");
@@ -57,15 +72,23 @@ export class ClickerModel extends Reactive {
             this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); // Trigger event with data
             console.log("MILESTONE_5k triggered from model!");
         }
-        if (this.clicks > this.MILESTONE_1K_THRESHOLD) {
+        if (this.clicks >= this.MILESTONE_100K_THRESHOLD && !this._LEVEL_THREE_NOTIFIED) {
+            this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); // Trigger event with data
+            console.log("MILESTONE_100k triggered from model!");
+        }
+        if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
            this.level = 1;
            this._LEVEL_ONE_NOTIFIED = true;
         }
-        if (this.clicks > this.MILESTONE_5K_THRESHOLD) {
+        if (this.clicks >= this.MILESTONE_5K_THRESHOLD) {
            this.level = 2;
            this._LEVEL_TWO_NOTIFIED = true;
         }
-        console.log ("Adding 100 : this.clicks :", this.clicks);
+        if (this.clicks >= this.MILESTONE_100K_THRESHOLD) {
+           this.level = 3;
+           this._LEVEL_THREE_NOTIFIED = true;
+        }
+        console.log ("Adding 500 : this.clicks :", this.clicks);
     }
 
     buyBots = () => {
@@ -80,7 +103,7 @@ export class ClickerModel extends Reactive {
              // () => notation keeps "this", function () {...} doesn't
              //
              this._intervalID = setInterval (() => {
-                this.clicks += this.botMultiplier * this.clickBots;
+                this.clicks += this.botMultiplier * this.clickBots * this.power;
              }, this.interval);
           }
        }
@@ -105,7 +128,7 @@ export class ClickerModel extends Reactive {
           if (!this._timerGoing) {
              this._timerGoing = true;
              this._intervalID = setInterval (() => {
-                this.clicks += this.botMultiplier * this.clickBigBots;
+                this.clicks += this.botMultiplier * this.clickBigBots * this.power;
              }, this.interval);
           }
        }
@@ -119,6 +142,30 @@ export class ClickerModel extends Reactive {
           return "disabled";
        }
     }
+
+    buyPower = () => {
+       console.log ("ClickerModel : buyPower called.");
+       if (this.level > 2) {
+          this.power++;
+          this.clicks       -= this.MILESTONE_100K_THRESHOLD; // Deduct cost
+          this._LEVEL_THREE_NOTIFIED = false;
+          if (!this._timerGoing) {
+             this._timerGoing = true;
+             this._intervalID = setInterval (() => {
+                this.clicks += this.botMultiplier * this.clickBigBots * this.power;
+             }, this.interval);
+          }
+       }
+    }
+    canBuyPower = () => {
+       console.log ("ClickerModel : canBuyPower called");
+       if (this.clicks > this.MILESTONE_100K_THRESHOLD) {
+          return "";
+       } else {
+          return "disabled";
+       }
+    }
+
 
     destroy = () => {
        console.log ("ClickerModel : destroy called");
