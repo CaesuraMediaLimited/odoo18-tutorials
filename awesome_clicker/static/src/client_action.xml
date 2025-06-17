@@ -4,6 +4,7 @@
    <t t-name="awesome_clicker.ClientAction" owl="1">
       <div class="container-fluid">
          <p>Clicks : <span t-esc="clicker.clicks"/></p>
+         <p>Level  : <span t-esc="clicker.level"/></p>
          <button class="btn" t-on-click="clicker.addHundred">
             <i id="icon" style="font-size:20px" class="fa fa-plus"/>
          </button>
@@ -53,11 +54,17 @@
             </div>
 
 
-            <div class="card mt-5">
-               <p t-if="clicker.level > 3">You can now have a tree with fruits</p>
-               <button class="btn btn-primary" t-on-click="clicker.buyTree" t-att-disabled="clicker.canBuyTree()">
-                  Buy Tree
-               </button>
+            <div t-if="clicker.level > 3" class="card mt-5">
+               <p>You can now have a tree with fruits</p>
+               <label for="tree-select">Select Tree Type:</label>
+               <select class="form-control" id="tree-select" t-model="state.selectedTreeType">
+                  <t t-foreach="Object.keys(clicker.trees)" t-as="treeKey" t-key="treeKey">
+                     <option t-att-value="treeKey"><t t-esc="treeKey"/></option>
+                  </t>
+               </select>
+                <button class="btn btn-primary ms-2" t-on-click="buySelectedTree">
+                    Buy <t t-esc="state.selectedTreeType"/> Tree
+                </button>
                <div class="row">
                   <t t-foreach="clicker.trees" t-as="tree_type" t-key="tree_type">
                      <div class="col-6">

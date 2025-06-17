@@ -31,6 +31,42 @@ export class ClickerModel extends Reactive {
               count           : 0,
               fruits          : 0,
            },
+           apple : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           lemon : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           orange : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           plum : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           peach : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           apricot : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
         };
 
         this.MILESTONE_1K_THRESHOLD = 1000;
@@ -72,19 +108,19 @@ export class ClickerModel extends Reactive {
         }
 
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
-           this.level = 1;
+           this.level = this.level == 0 ? 1 : this.level;
            this._LEVEL_ONE_NOTIFIED = true;
         }
         if (this.clicks >= this.MILESTONE_5K_THRESHOLD) {
-           this.level = 2;
+           this.level = this.level == 1 ? 2 : this.level;
            this._LEVEL_TWO_NOTIFIED = true;
         }
         if (this.clicks >= this.MILESTONE_100K_THRESHOLD) {
-           this.level = 3;
+           this.level = this.level == 2 ? 3 : this.level;
            this._LEVEL_THREE_NOTIFIED = true;
         }
         if (this.clicks >= this.MILESTONE_1M_THRESHOLD) {
-           this.level = 4;
+           this.level = this.level == 3 ? 4 : this.level;
            this._LEVEL_FOUR_NOTIFIED = true;
         }
     }
@@ -177,9 +213,8 @@ export class ClickerModel extends Reactive {
        }
     }
 
-    buyTree = () => {
-       let type = "pear";
-       console.log ("ClickerModel : buyTree called.");
+    buyTree = (type) => {
+       console.log ("ClickerModel : buyTree called : type : ", type);
        if (this.level > 3) {
           this.clicks       -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
           this._LEVEL_FOUR_NOTIFIED = false;

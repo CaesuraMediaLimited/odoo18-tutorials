@@ -35,6 +35,13 @@ export class ClientAction extends Component {
        console.log ("this.clicker.trees : ", this.clicker.trees);
        // this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
 
+        // Define component state to hold a selected tree type - here and not in the model.
+        //
+        this.state            = useState({
+            selectedTreeType: Object.keys(this.clicker.trees)[0], // default to first one.
+        });
+
+
        const effectService    = useService("effect");
        useBus(this.clicker.bus, "MILESTONE_1k", (ev) => {
             console.log("ClientAction: MILESTONE_1k received!", ev.detail);
@@ -57,6 +64,19 @@ export class ClientAction extends Component {
                 message: "Congratulations! You reached 100K clicks!",
             });
         });
+    }
+    /**
+     * Handles the click event for buying a tree.
+     * Calls the buyTree method on the clicker service with the selected type.
+     */
+    buySelectedTree() {
+        const treeTypeToBuy = this.state.selectedTreeType;
+        if (!treeTypeToBuy) {
+            this.env.services.notification.add("Please select a tree type.", { type: 'danger' });
+            return;
+        }
+        this.clicker.buyTree(treeTypeToBuy);
+        this.env.services.notification.add(`You bought a ${treeTypeToBuy} tree!`, { type: 'success', sticky: false });
     }
     /*
     addHundred () {
