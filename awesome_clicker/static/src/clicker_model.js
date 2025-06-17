@@ -18,10 +18,20 @@ export class ClickerModel extends Reactive {
         this.interval      = 10000;
 
         this.treeInterval    = 30000;
-        this._treeIntervalID = 0;
-        this._treeTimerGoing = false;
-        this.fruits          = 0;
-        this.trees           = 0;
+        this.trees           = {
+           pear   : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+           cherry : {
+              _treeIntervalID : 0,
+              _treeTimerGoing : 0,
+              count           : 0,
+              fruits          : 0,
+           },
+        };
 
         this.MILESTONE_1K_THRESHOLD = 1000;
         this.MILESTONE_5K_THRESHOLD = 5000;
@@ -168,15 +178,16 @@ export class ClickerModel extends Reactive {
     }
 
     buyTree = () => {
+       let type = "pear";
        console.log ("ClickerModel : buyTree called.");
        if (this.level > 3) {
           this.clicks       -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
           this._LEVEL_FOUR_NOTIFIED = false;
-          this.trees++;
-          if (!this._treeTimerGoing) {
-             this._treeTimerGoing = true;
-             this._treeIntervalID = setInterval (() => {
-                this.fruits += 1;
+          this.trees[type]['count']++;
+          if (!this.trees[type]['_treeTimerGoing']) {
+             this.trees[type]['_treeTimerGoing'] = true;
+             this.trees[type]['_treeIntervalID'] = setInterval (() => {
+                this.trees[type]['fruits']++;
              }, this.treeInterval);
           }
        }

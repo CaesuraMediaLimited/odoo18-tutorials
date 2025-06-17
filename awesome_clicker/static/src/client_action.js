@@ -32,6 +32,7 @@ export class ClientAction extends Component {
        // this.state          = useState(this.clickerService.state);
        // this.clicker        = useClicker();
        this.clicker           = useState(useService("awesome_clicker.service"));
+       console.log ("this.clicker.trees : ", this.clicker.trees);
        // this.state          = useState ({level : 0, clickBots : 0, timerGoing : false});
 
        const effectService    = useService("effect");

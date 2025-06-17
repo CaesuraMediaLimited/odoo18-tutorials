@@ -1,76 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    
-    <t t-name="awesome_clicker.ClientAction" owl="1">
-        <div class="container-fluid">
-           <p>Clicks : <span t-esc="clicker.clicks"/></p>
-           <button class="btn" t-on-click="clicker.addHundred">
-              <i id="icon" style="font-size:20px" class="fa fa-plus"/>
-           </button>
-           <hr />
-           <div>
-              <h2>Bots</h2>
-              <div class="row">
-                 <div class="col-4">
-                    <div class="card">
-                       <div class="card-header">
-                          <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
-                          <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
-                       </div>
-                       <div class="card-body">
-                           <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
-                              Buy ClickBot (1000 clicks)
-                           </button>
-                       </div>
-                    </div>
-                 </div>
-                 <div class="col-4">
-                    <div class="card">
-                       <div class="card-header">
-                          <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
-                          <p t-if="clicker.level > 1">You can now buy Big clickbots! Each Big bot costs 5000 clicks.</p>
-                       </div>
-                       <div class="card-body">
-                           <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
-                              Buy BigClickBot (5000 clicks)
-                           </button>
-                       </div>
-                    </div>
-                 </div>
-                 <div class="col-4">
-                    <div class="card">
-                       <div class="card-header">
-                          <p><t t-esc="clicker.power"/> multiplier</p>
-                          <p t-if="clicker.level > 3">You can now buy a Power Multiplier</p>
-                       </div>
-                       <div class="card-body">
-                           <button class="btn btn-primary" t-on-click="clicker.buyPower" t-att-disabled="clicker.canBuyPower()">
-                              Buy Power
-                           </button>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-              <div class="row">
-                 <div class="col-6">
-                    <div class="card">
-                       <div class="card-header">
-                          <h6>Fruit Trees</h6>
-                          <p><t t-esc="clicker.trees"/>x Trees</p>
-                          <p><t t-esc="clicker.fruits"/>x Fruits</p>
-                          <p t-if="clicker.level > 3">You can now have a tree with fruits</p>
-                       </div>
-                       <div class="card-body">
-                           <button class="btn btn-primary" t-on-click="clicker.buyTree" t-att-disabled="clicker.canBuyTree()">
-                              Buy Tree
-                           </button>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-          </div>
-        </div>
-    </t>
+   <t t-name="awesome_clicker.ClientAction" owl="1">
+      <div class="container-fluid">
+         <p>Clicks : <span t-esc="clicker.clicks"/></p>
+         <button class="btn" t-on-click="clicker.addHundred">
+            <i id="icon" style="font-size:20px" class="fa fa-plus"/>
+         </button>
+         <hr />
+         <div>
+            <h2>Bots</h2>
+            <div class="row">
+               <div class="col-4">
+                  <div class="card">
+                     <div class="card-header">
+                        <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
+                        <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
+                     </div>
+                     <div class="card-body">
+                        <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
+                           Buy ClickBot (1000 clicks)
+                        </button>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="card">
+                     <div class="card-header">
+                        <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
+                        <p t-if="clicker.level > 1">You can now buy Big clickbots! Each Big bot costs 5000 clicks.</p>
+                     </div>
+                     <div class="card-body">
+                        <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
+                           Buy BigClickBot (5000 clicks)
+                        </button>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4">
+                  <div class="card">
+                     <div class="card-header">
+                        <p><t t-esc="clicker.power"/> multiplier</p>
+                        <p t-if="clicker.level > 3">You can now buy a Power Multiplier</p>
+                     </div>
+                     <div class="card-body">
+                        <button class="btn btn-primary" t-on-click="clicker.buyPower" t-att-disabled="clicker.canBuyPower()">
+                           Buy Power
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
 
+
+            <div class="card mt-5">
+               <p t-if="clicker.level > 3">You can now have a tree with fruits</p>
+               <button class="btn btn-primary" t-on-click="clicker.buyTree" t-att-disabled="clicker.canBuyTree()">
+                  Buy Tree
+               </button>
+               <div class="row">
+                  <t t-foreach="clicker.trees" t-as="tree_type" t-key="tree_type">
+                     <div class="col-6">
+                        <div class="card">
+                           <div class="card-header">
+                              <h6><t t-esc="tree_type"/> </h6>
+                           </div>
+                           <div class="card-body">
+                              <p><t t-esc="clicker.trees[tree_type].count"/>x Trees</p>
+                              <p><t t-esc="clicker.trees[tree_type].fruits"/>x <t t-esc="tree_type"/></p>
+                           </div>
+                        </div>
+                     </div>
+                  </t>
+               </div>
+            </div>
+
+
+         </div>
+      </div>
+   </t>
 </templates>
 
