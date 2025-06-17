@@ -16,12 +16,22 @@ export class ClickerModel extends Reactive {
         this.botMultiplier = 10;
         this.power         = 1;
         this.interval      = 10000;
+
+        this.treeInterval    = 30000;
+        this._treeIntervalID = 0;
+        this._treeTimerGoing = false;
+        this.fruits          = 0;
+        this.trees           = 0;
+
         this.MILESTONE_1K_THRESHOLD = 1000;
         this.MILESTONE_5K_THRESHOLD = 5000;
         this.MILESTONE_100K_THRESHOLD = 100000;
+        this.MILESTONE_1M_THRESHOLD = 1000000;
         this._LEVEL_ONE_NOTIFIED    = false;
         this._LEVEL_TWO_NOTIFIED    = false;
         this._LEVEL_THREE_NOTIFIED  = false;
+        this._LEVEL_FOUR_NOTIFIED  = false;
+
         this.bus           = new EventBus();
         this.setup(config, data, options);
     }
@@ -46,6 +56,11 @@ export class ClickerModel extends Reactive {
             this.bus.trigger("MILESTONE_100k", { currentClicks: this.clicks }); 
             console.log("MILESTONE_100k triggered from model!");
         }
+        if (this.clicks >= this.MILESTONE_1M_THRESHOLD && !this._LEVEL_FOUR_NOTIFIED ) {
+            this.bus.trigger("MILESTONE_1M", { currentClicks: this.clicks }); 
+            console.log("MILESTONE_1M triggered from model!");
+        }
+
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD) {
            this.level = 1;
            this._LEVEL_ONE_NOTIFIED = true;
@@ -58,13 +73,21 @@ export class ClickerModel extends Reactive {
            this.level = 3;
            this._LEVEL_THREE_NOTIFIED = true;
         }
+        if (this.clicks >= this.MILESTONE_1M_THRESHOLD) {
+           this.level = 4;
+           this._LEVEL_FOUR_NOTIFIED = true;
+        }
     }
 
     addHundred = () => {
-        if (this.level > 1) {
+        if (this.level == 1) {
             this.increment (5000);
+        } else if (this.level == 2) {
+            this.increment(10000); 
+        } else if (this.level == 3) {
+            this.increment(200000); 
         } else {
-            this.increment(500); 
+            this.increment(100); 
         }
         console.log ("Adding some : this.clicks :", this.clicks);
     }
@@ -138,6 +161,29 @@ export class ClickerModel extends Reactive {
     canBuyPower = () => {
        console.log ("ClickerModel : canBuyPower called");
        if (this.clicks > this.MILESTONE_100K_THRESHOLD) {
+          return "";
+       } else {
+          return "disabled";
+       }
+    }
+
+    buyTree = () => {
+       console.log ("ClickerModel : buyTree called.");
+       if (this.level > 3) {
+          this.clicks       -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
+          this._LEVEL_FOUR_NOTIFIED = false;
+          this.trees++;
+          if (!this._treeTimerGoing) {
+             this._treeTimerGoing = true;
+             this._treeIntervalID = setInterval (() => {
+                this.fruits += 1;
+             }, this.treeInterval);
+          }
+       }
+    }
+    canBuyTree = () => {
+       console.log ("ClickerModel : canBuyTree called");
+       if (this.clicks > this.MILESTONE_1M_THRESHOLD) {
           return "";
        } else {
           return "disabled";

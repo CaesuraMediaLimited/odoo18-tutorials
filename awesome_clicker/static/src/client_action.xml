@@ -51,7 +51,24 @@
                     </div>
                  </div>
               </div>
-           </div>
+              <div class="row">
+                 <div class="col-6">
+                    <div class="card">
+                       <div class="card-header">
+                          <h6>Fruit Trees</h6>
+                          <p><t t-esc="clicker.trees"/>x Trees</p>
+                          <p><t t-esc="clicker.fruits"/>x Fruits</p>
+                          <p t-if="clicker.level > 3">You can now have a tree with fruits</p>
+                       </div>
+                       <div class="card-body">
+                           <button class="btn btn-primary" t-on-click="clicker.buyTree" t-att-disabled="clicker.canBuyTree()">
+                              Buy Tree
+                           </button>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+          </div>
         </div>
     </t>
 
