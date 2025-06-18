@@ -55,6 +55,8 @@
 
 
             <div t-if="clicker.level > 3" class="card mt-5">
+               <p>Total Trees : <t t-esc="totalTrees"/></p>
+               <p>Total fruits : <t t-esc="totalFruits"/></p>
                <p>You can now have a tree with fruits</p>
                <label for="tree-select">Select Tree Type:</label>
                <select class="form-control" id="tree-select" t-model="state.selectedTreeType">

@@ -88,6 +88,9 @@ export class ClickerModel extends Reactive {
     // Arrow notation throughout to keep "this" in this context.
     //
     increment = (amount) => {
+        if (typeof amount !== "number") {
+           amount = 1;
+        }
         this.clicks += amount * this.power;
         console.log ("ClickerModel : increment called : this.clicks : ", this.clicks);
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED ) {
@@ -123,6 +126,10 @@ export class ClickerModel extends Reactive {
            this.level = this.level == 3 ? 4 : this.level;
            this._LEVEL_FOUR_NOTIFIED = true;
         }
+    }
+
+    addFiftySeven = () => {
+       this.clicks += 57;
     }
 
     addHundred = () => {
@@ -216,7 +223,7 @@ export class ClickerModel extends Reactive {
     buyTree = (type) => {
        console.log ("ClickerModel : buyTree called : type : ", type);
        if (this.level > 3) {
-          this.clicks       -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
+          this.clicks = 0; // for now      -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
           this._LEVEL_FOUR_NOTIFIED = false;
           this.trees[type]['count']++;
           if (!this.trees[type]['_treeTimerGoing']) {

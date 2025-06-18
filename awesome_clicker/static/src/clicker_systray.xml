@@ -4,21 +4,33 @@
     <t t-name="awesome_clicker.ClickerSystray" owl="1">
        <div class="container-fluid">
           <div class="row">
-             <div class="col-4">
-                Clicks : <span t-esc="clicker.clicks"/>
+             <div class="col-6">
+                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-hand-pointer-o"/><span t-esc="clicker.clicks" />
+                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-tree"/><span t-esc="totalTrees" />
+                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-apple"/><span t-esc="totalFruits" />
              </div>
-             <div class="col-4">
-                <button id="button" class="btn button-primary" t-on-click="clicker.increment">
-                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
+             <div class="col-3">
+                <button id="button1" class="btn button-primary" t-on-click="openClientAction">
+                   Open
                 </button>
              </div>
-             <div class="col-4">
-                <button id="button2" class="btn button-primary" t-on-click="openClientAction">
-                   Open
+             <div class="col-3">
+                <button id="button2" class="btn button-primary" t-on-click="clicker.increment">
+                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
                 </button>
              </div>
           </div>
        </div>
+       <Dropdown>
+          <button class="btn btn-light">
+             Options
+          </button>
+          <t t-set-slot="content">
+             <DropdownItem onSelected="() => clicker.addFiftySeven()">
+                <i class="fa fa-shopping-cart me-2"/> Add 57 Cicks
+             </DropdownItem>
+          </t>
+       </Dropdown>
     </t>
 
 </templates>

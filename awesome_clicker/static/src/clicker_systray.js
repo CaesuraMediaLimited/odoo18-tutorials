@@ -4,6 +4,8 @@ import { Component, useState, onWillStart, useExternalListener } from "@odoo/owl
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 // import { useClicker } from "./use_clicker";
 // import { ClickValue } from "./clickvalue";
 
@@ -14,6 +16,8 @@ export class ClickerSystray extends Component {
 
     static components = {
        // ClickValue,
+       Dropdown,
+       DropdownItem,
     }
 
     setup () {
@@ -30,6 +34,24 @@ export class ClickerSystray extends Component {
           }
           this.clicker.increment (1);
        });
+    }
+
+    // Totals for trees and fruits.
+    //  
+    get totalTrees () {
+        let sum = 0;
+        for (const treeType in this.clicker.trees) {
+            sum += this.clicker.trees[treeType].count;
+        }   
+        return sum;
+    }
+
+    get totalFruits () {
+        let sum = 0;
+        for (const treeType in this.clicker.trees) {
+            sum += this.clicker.trees[treeType].fruits;
+        }   
+        return sum;
     }
 
     openClientAction() {
