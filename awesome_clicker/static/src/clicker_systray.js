@@ -29,7 +29,7 @@ export class ClickerSystray extends Component {
        this.clicker        = useState(useService("awesome_clicker.service"));
 
        useExternalListener(document.body, "click", (ev) => {
-          if (ev.target.id == "button" || ev.target.id == "icon") {
+          if (ev.target.id.match(/icon/)) {
              return false;
           }
           this.clicker.increment (1);

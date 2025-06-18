@@ -2,32 +2,33 @@
 <templates xml:space="preserve">
    
     <t t-name="awesome_clicker.ClickerSystray" owl="1">
-       <div class="container-fluid">
-          <div class="row">
-             <div class="col-6">
-                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-hand-pointer-o"/><span t-esc="clicker.clicks" />
-                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-tree"/><span t-esc="totalTrees" />
-                <i id="icon" style="font-size:20px;padding-left:5px;padding-right:5px" class="fa fa-apple"/><span t-esc="totalFruits" />
-             </div>
-             <div class="col-3">
-                <button id="button1" class="btn button-primary" t-on-click="openClientAction">
-                   Open
-                </button>
-             </div>
-             <div class="col-3">
-                <button id="button2" class="btn button-primary" t-on-click="clicker.increment">
-                   <i id="icon" style="font-size:20px" class="fa fa-plus"/>
-                </button>
-             </div>
-          </div>
-       </div>
+       <span style="margin-right:5px" t-esc="clicker.clicks"/>
+       <i    style="margin-right:20px" id="icon1" class="fa fa-hand-pointer-o"/>
+
+       <span style="margin-right:5px" t-esc="totalTrees" />
+       <i    style="margin-right:20px" id="icon2" class="fa fa-tree"/>
+
+       <span style="margin-right:5px" t-esc="totalFruits" />
+       <i    style="margin-right:20px" id="icon3" class="fa fa-apple"/>
+
+       <i id="icon4" class="fa fa-plus" t-on-click="clicker.increment"/>
+
        <Dropdown>
           <button class="btn btn-light">
              Options
           </button>
           <t t-set-slot="content">
+             <DropdownItem onSelected="() => this.openClientAction()">
+                <i class="fa fa-hand-pointer-o me-2"/> Open Clicker Game
+             </DropdownItem>
              <DropdownItem onSelected="() => clicker.addFiftySeven()">
-                <i class="fa fa-shopping-cart me-2"/> Add 57 Cicks
+                <i class="fa fa-plus me-2"/> Add 57 Cicks
+             </DropdownItem>
+             <DropdownItem>
+                <i class="fa fa-tree me-2"/><span t-esc="totalTrees" />
+             </DropdownItem>
+             <DropdownItem>
+                <i class="fa fa-apple me-2"/><span t-esc="totalFruits" />
              </DropdownItem>
           </t>
        </Dropdown>
