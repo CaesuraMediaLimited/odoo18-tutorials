@@ -4,6 +4,7 @@ import { Component, useState, onWillStart, useExternalListener, } from "@odoo/ow
 import { useService, useBus, useComputed } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
+import { Notebook } from "@web/core/notebook/notebook";
 
 // import { useClicker } from "./use_clicker";
 // import { ClickValue } from "./clickvalue";
@@ -23,6 +24,7 @@ export class ClientAction extends Component {
 
     static components = {
        Layout,
+       Notebook,
        // ClickValue,
     }
 

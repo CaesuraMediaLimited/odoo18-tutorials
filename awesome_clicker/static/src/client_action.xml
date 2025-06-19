@@ -1,73 +1,89 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
    
    <t t-name="awesome_clicker.ClientAction" owl="1">
-      <div class="container-fluid">
-         <p>Clicks : <span t-esc="clicker.clicks"/></p>
-         <p>Level  : <span t-esc="clicker.level"/></p>
+      <div style="padding:10px;display:flex;justify-content:space-around">
          <button class="btn" t-on-click="clicker.addHundred">
-            <i id="icon" style="font-size:20px" class="fa fa-plus"/>
+            <i id="icon5" style="font-size:20px" class="fa fa-plus"/>
          </button>
-         <hr />
-         <div>
-            <h2>Bots</h2>
-            <div class="row">
-               <div class="col-4">
-                  <div class="card">
-                     <div class="card-header">
-                        <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
-                        <p t-if="clicker.level > 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
+         <p><i id="icon1" class="fa fa-hand-pointer-o"/>  : <t t-esc="clicker.clicks"/></p>
+         <p><i id="icon2" class="fa fa-bars"/>            : <t t-esc="clicker.level"/></p>
+         <p><i id="icon3" class="fa fa-tree"/>            : <t t-esc="totalTrees"/></p>
+         <p><i id="icon4" class="fa fa-apple"/>           : <t t-esc="totalFruits"/></p>
+      </div>
+      <p style="margin-left:10px;" t-if="clicker.level &gt; 3">
+         <p>You can now have a tree with fruits</p>
+      </p>
+      <Notebook defaultPage="'clicks'">
+         <t t-set-slot="clicks" name="'clicks'" isVisible="true" title="'Clicks'">
+            <div class="container-fluid">
+               <div>
+                  <h2>Bots</h2>
+                  <div class="row">
+                     <div class="col-4">
+                        <div class="card">
+                           <div class="card-header">
+                              <p><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10 seconds)</p>
+                              <p t-if="clicker.level &gt; 0">You can now buy clickbots! Each bot costs 1000 clicks.</p>
+                           </div>
+                           <div class="card-body">
+                              <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
+                                 Buy ClickBot (1000 clicks)
+                              </button>
+                           </div>
+                        </div>
                      </div>
-                     <div class="card-body">
-                        <button class="btn btn-primary" t-on-click="clicker.buyBots" t-att-disabled="clicker.canBuyClickBots()">
-                           Buy ClickBot (1000 clicks)
-                        </button>
+                     <div class="col-4">
+                        <div class="card">
+                           <div class="card-header">
+                              <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
+                              <p t-if="clicker.level &gt; 1">You can now buy Big clickbots! Each Big bot costs 5000 clicks.</p>
+                           </div>
+                           <div class="card-body">
+                              <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
+                                 Buy BigClickBot (5000 clicks)
+                              </button>
+                           </div>
+                        </div>
                      </div>
-                  </div>
-               </div>
-               <div class="col-4">
-                  <div class="card">
-                     <div class="card-header">
-                        <p><t t-esc="clicker.clickBigBots"/>x ClickBigBots (100 clicks/10 seconds)</p>
-                        <p t-if="clicker.level > 1">You can now buy Big clickbots! Each Big bot costs 5000 clicks.</p>
-                     </div>
-                     <div class="card-body">
-                        <button class="btn btn-primary" t-on-click="clicker.buyBigBots" t-att-disabled="clicker.canBuyBigClickBots()">
-                           Buy BigClickBot (5000 clicks)
-                        </button>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-4">
-                  <div class="card">
-                     <div class="card-header">
-                        <p><t t-esc="clicker.power"/> multiplier</p>
-                        <p t-if="clicker.level > 3">You can now buy a Power Multiplier</p>
-                     </div>
-                     <div class="card-body">
-                        <button class="btn btn-primary" t-on-click="clicker.buyPower" t-att-disabled="clicker.canBuyPower()">
-                           Buy Power
-                        </button>
+                     <div class="col-4">
+                        <div class="card">
+                           <div class="card-header">
+                              <p><t t-esc="clicker.power"/> multiplier</p>
+                              <p t-if="clicker.level &gt; 3">You can now buy a Power Multiplier</p>
+                           </div>
+                           <div class="card-body">
+                              <button class="btn btn-primary" t-on-click="clicker.buyPower" t-att-disabled="clicker.canBuyPower()">
+                                 Buy Power
+                              </button>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
+         </t>
 
-
-            <div t-if="clicker.level > 3" class="card mt-5">
-               <p>Total Trees : <t t-esc="totalTrees"/></p>
-               <p>Total fruits : <t t-esc="totalFruits"/></p>
-               <p>You can now have a tree with fruits</p>
-               <label for="tree-select">Select Tree Type:</label>
-               <select class="form-control" id="tree-select" t-model="state.selectedTreeType">
-                  <t t-foreach="Object.keys(clicker.trees)" t-as="treeKey" t-key="treeKey">
-                     <option t-att-value="treeKey"><t t-esc="treeKey"/></option>
-                  </t>
-               </select>
-                <button class="btn btn-primary ms-2" t-on-click="buySelectedTree">
-                    Buy <t t-esc="state.selectedTreeType"/> Tree
-                </button>
-               <div class="row">
+         <t class="container-fluid" t-set-slot="treesfruits" name="'treesfruits'" isVisible="true" title="'Trees and Fruits'">
+            <div  t-if="clicker.level &gt; 3" class="card">
+               <div class="row mt-5 mb-5">
+                  <div class="col-6">
+                     <div class="form-group">
+                        <label class="control-label col-sm-offset-2 col-sm-2" for="tree-select">Select Tree</label>
+                        <select class="form-control" id="tree-select" t-model="state.selectedTreeType">
+                           <t t-foreach="Object.keys(clicker.trees)" t-as="treeKey" t-key="treeKey">
+                              <option t-att-value="treeKey"><t t-esc="treeKey"/></option>
+                           </t>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-6">
+                     <button class="btn btn-primary ms-2" t-on-click="buySelectedTree">
+                        Buy <t t-esc="state.selectedTreeType"/> Tree
+                     </button>
+                  </div>
+               </div>
+               <div class="row mt-5">
                   <t t-foreach="clicker.trees" t-as="tree_type" t-key="tree_type">
                      <div class="col-6">
                         <div class="card">
@@ -83,10 +99,11 @@
                   </t>
                </div>
             </div>
+            <div t-else="" style="padding:10px">
+               <p>Level 4 required for Trees and Fruits.</p>
+            </div>
+         </t>
+     </Notebook>
 
-
-         </div>
-      </div>
    </t>
 </templates>
-
