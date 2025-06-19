@@ -3,87 +3,152 @@ import { useService } from "@web/core/utils/hooks";
 import { EventBus   } from "@odoo/owl";
 import { rewards    } from "./click_rewards";
 import { choose     } from "./utils";
+import { browser    } from "@web/core/browser/browser";
 
 export class ClickerModel extends Reactive {
     constructor (model, config, data, options) {
         super(...arguments);
-        this.clicks        = 0;
-        this.clickBots     = 0;
-        this.clickBigBots  = 0;
-        this.level         = 0;
+        let gameState = {};
+        try {
+           gameState = JSON.parse(browser.localStorage.getItem ("gameState"));
+           if (!gameState) {
+              gameState = {};
+           }
+        } catch (err) {
+           gameState = {};
+        }
+        console.log ("gameState : ", gameState);
+        this.clicks        = gameState?.clicks || 0;
+        this.clickBots     = gameState?.clickBots || 0;
+        this.clickBigBots  = gameState?.clickBigBots || 0;
+        this.level         = gameState?.level || 0;
         this._timerGoing   = false;
         this._intervalID   = 0;
         this.botMultiplier = 10;
-        this.power         = 1;
+        this.power         = gameState?.power || 1;
         this.interval      = 10000;
 
-        this.treeInterval    = 30000;
-        this.trees           = {
+        this.treeInterval    = 10000;
+        this.trees           = gameState?.trees || {
            pear   : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            cherry : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            apple : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            lemon : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            orange : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            plum : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            peach : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
            apricot : {
               _treeIntervalID : 0,
-              _treeTimerGoing : 0,
+              _treeTimerGoing : false,
               count           : 0,
               fruits          : 0,
            },
         };
 
-        this.MILESTONE_1K_THRESHOLD = 1000;
-        this.MILESTONE_5K_THRESHOLD = 5000;
+        this.MILESTONE_1K_THRESHOLD   = 1000;
+        this.MILESTONE_5K_THRESHOLD   = 5000;
         this.MILESTONE_100K_THRESHOLD = 100000;
-        this.MILESTONE_1M_THRESHOLD = 1000000;
-        this._LEVEL_ONE_NOTIFIED    = false;
-        this._LEVEL_TWO_NOTIFIED    = false;
-        this._LEVEL_THREE_NOTIFIED  = false;
-        this._LEVEL_FOUR_NOTIFIED  = false;
+        this.MILESTONE_1M_THRESHOLD   = 1000000;
+
+        this._LEVEL_ONE_NOTIFIED    = gameState?._LEVEL_ONE_NOTIFIED   || false;
+        this._LEVEL_TWO_NOTIFIED    = gameState?._LEVEL_TWO_NOTIFIED   || false;
+        this._LEVEL_THREE_NOTIFIED  = gameState?._LEVEL_THREE_NOTIFIED || false;
+        this._LEVEL_FOUR_NOTIFIED   = gameState?._LEVEL_FOUR_NOTIFIED  || false;
 
         this.bus           = new EventBus();
+
+        // Start all of the timers that wre running before if there is state saved 
+        // in localStorage.
+        //
+        if (Object.keys(gameState).length > 0 ) {
+
+           // At least one clickBot.
+           //
+           if (this.clickBots > 0) {
+              this._timerGoing = true;
+              this._intervalID = setInterval (() => {
+                 this.clicks += this.botMultiplier * this.clickBots * this.power;
+                 this.serialise();
+              }, this.interval);
+           }
+
+           Object.keys (this.trees).map((treeType, index) => {
+              if (this.trees[treeType].count > 0) {
+                 this.trees[treeType]['_treeTimerGoing'] = true;
+                 this.trees[treeType]['_treeIntervalID'] = setInterval (() => {
+                    this.trees[treeType]['fruits']++;
+                    this.serialise ();
+                 }, this.treeInterval);
+              }
+           });
+        }
+
         this.setup(config, data, options);
     }
 
     setup() {
     }
+
+   serialise () {
+
+      // First set all timerGoing to false to restart them on reload.
+      //
+      let savedTrees = {};
+      Object.keys(this.trees).map ((treeType, index) => {
+         savedTrees[treeType] = {
+            ...this.trees[treeType],
+            "_treeTimerGoing" : false,
+         }
+      });
+      browser.localStorage.setItem ("gameState", JSON.stringify({
+         clicks                : this.clicks,
+         clickBots             : this.clickBots,
+         clickBigBots          : this.clickBigBots,
+         level                 : this.level,
+         botMultiplier         : this.botMultiplier,
+         power                 : this.power,
+         trees                 : savedTrees,
+         _LEVEL_ONE_NOTIFIED   : this._LEVEL_ONE_NOTIFIED,
+         _LEVEL_TWO_NOTIFIED   : this._LEVEL_TWO_NOTIFIED,
+         _LEVEL_THREE_NOTIFIED : this._LEVEL_THREE_NOTIFIED,
+         _LEVEL_FOUR_NOTIFIED  : this._LEVEL_FOUR_NOTIFIED,
+      }));
+   }
 
     // Arrow notation throughout to keep "this" in this context.
     //
@@ -93,9 +158,10 @@ export class ClickerModel extends Reactive {
         }
         this.clicks += amount * this.power;
         console.log ("ClickerModel : increment called : this.clicks : ", this.clicks);
+
         if (this.clicks >= this.MILESTONE_1K_THRESHOLD && !this._LEVEL_ONE_NOTIFIED ) {
             this.bus.trigger("MILESTONE_1k", { currentClicks: this.clicks }); 
-            console.log("MILESTONE_1k triggered from model!");
+            console.log("MILESTONE_1k triggered from model : this._LEVEL_ONE_NOTIFIED", this._LEVEL_ONE_NOTIFIED);
         }
         if (this.clicks >= this.MILESTONE_5K_THRESHOLD && !this._LEVEL_TWO_NOTIFIED ) {
             this.bus.trigger("MILESTONE_5k", { currentClicks: this.clicks }); 
@@ -126,11 +192,13 @@ export class ClickerModel extends Reactive {
            this.level = this.level == 3 ? 4 : this.level;
            this._LEVEL_FOUR_NOTIFIED = true;
         }
+        this.serialise ();
     }
 
-    addFiftySeven = () => {
-       this.clicks += 57;
-    }
+   addFiftySeven = () => {
+      this.clicks += 57;
+      this.serialise ();
+   }
 
     addHundred = () => {
         if (this.level == 1) {
@@ -139,6 +207,8 @@ export class ClickerModel extends Reactive {
             this.increment(10000); 
         } else if (this.level == 3) {
             this.increment(200000); 
+        } else if (this.level == 4) {
+            this.increment(500000); 
         } else {
             this.increment(100); 
         }
@@ -150,7 +220,6 @@ export class ClickerModel extends Reactive {
        if (this.level > 0) {
           this.clickBots++;
           this.clicks -= this.MILESTONE_1K_THRESHOLD; // Deduct cost
-          this._LEVEL_ONE_NOTIFIED = false;
           if (!this._timerGoing) {
              this._timerGoing = true;
 
@@ -158,8 +227,10 @@ export class ClickerModel extends Reactive {
              //
              this._intervalID = setInterval (() => {
                 this.clicks += this.botMultiplier * this.clickBots * this.power;
+                this.serialise();
              }, this.interval);
           }
+          this.serialise ();
        }
     }
 
@@ -177,15 +248,16 @@ export class ClickerModel extends Reactive {
        if (this.level > 1) {
           this.clickBigBots++;
           this.clicks       -= this.MILESTONE_5K_THRESHOLD; // Deduct cost
-          this._LEVEL_TWO_NOTIFIED = false;
           this.botMultiplier = 100;
           if (!this._timerGoing) {
              this._timerGoing = true;
              this._intervalID = setInterval (() => {
                 this.clicks += this.botMultiplier * this.clickBigBots * this.power;
+                this.serialise();
              }, this.interval);
           }
        }
+       this.serialise ();
     }
 
     canBuyBigClickBots = () => {
@@ -202,13 +274,14 @@ export class ClickerModel extends Reactive {
        if (this.level > 2) {
           this.power++;
           this.clicks       -= this.MILESTONE_100K_THRESHOLD; // Deduct cost
-          this._LEVEL_THREE_NOTIFIED = false;
           if (!this._timerGoing) {
              this._timerGoing = true;
              this._intervalID = setInterval (() => {
                 this.clicks += this.botMultiplier * this.clickBigBots * this.power;
+                this.serialise();
              }, this.interval);
           }
+          this.serialise ();
        }
     }
     canBuyPower = () => {
@@ -224,14 +297,15 @@ export class ClickerModel extends Reactive {
        console.log ("ClickerModel : buyTree called : type : ", type);
        if (this.level > 3) {
           this.clicks = 0; // for now      -= this.MILESTONE_1M_THRESHOLD; // Deduct cost
-          this._LEVEL_FOUR_NOTIFIED = false;
           this.trees[type]['count']++;
           if (!this.trees[type]['_treeTimerGoing']) {
              this.trees[type]['_treeTimerGoing'] = true;
              this.trees[type]['_treeIntervalID'] = setInterval (() => {
                 this.trees[type]['fruits']++;
+                this.serialise ();
              }, this.treeInterval);
           }
+          this.serialise ();
        }
     }
     canBuyTree = () => {
@@ -274,6 +348,7 @@ export class ClickerModel extends Reactive {
         if (reward) {
             reward.apply(this);
             this.bus.trigger("reward_applied", { description: reward.description });
+            this.serialise ();
         }
     }
 
@@ -321,5 +396,6 @@ export class ClickerModel extends Reactive {
        console.log ("ClickerModel : destroy called");
        clearInterval(this._intervalID);
        this._timerGoing = false;
+       this.serialise ();
     }
 }
