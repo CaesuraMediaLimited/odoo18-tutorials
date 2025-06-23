@@ -5,9 +5,39 @@ import { rewards    } from "./click_rewards";
 import { choose     } from "./utils";
 import { browser    } from "@web/core/browser/browser";
 
+// Migrations.
+//
+const MIGRATIONS = [
+    {
+        fromVersion: 1,
+        toVersion: 2,
+        apply: (model) => { 
+            console.log("Applying migration from V1 to V2: Adding peach trees.");
+            model.trees = {
+                ...model.trees,
+                peach: {
+                    _treeIntervalID : 0,
+                    _treeTimerGoing : false,
+                    count           : 0,
+                    fruits          : 0,
+                },
+            };
+        },
+    },
+    // Add more migrations here 
+    // {
+    //     fromVersion: 2,
+    //     toVersion: 3,
+    //     apply: (model) => {
+    //         console.log("Applying migration from V2 to V3");
+    //     },
+    // },
+];
+
 export class ClickerModel extends Reactive {
     constructor (model, config, data, options) {
         super(...arguments);
+        this.version = 2;
         let gameState = {};
         try {
            gameState = JSON.parse(browser.localStorage.getItem ("gameState"));
@@ -66,12 +96,6 @@ export class ClickerModel extends Reactive {
               count           : 0,
               fruits          : 0,
            },
-           peach : {
-              _treeIntervalID : 0,
-              _treeTimerGoing : false,
-              count           : 0,
-              fruits          : 0,
-           },
            apricot : {
               _treeIntervalID : 0,
               _treeTimerGoing : false,
@@ -90,7 +114,21 @@ export class ClickerModel extends Reactive {
         this._LEVEL_THREE_NOTIFIED  = gameState?._LEVEL_THREE_NOTIFIED || false;
         this._LEVEL_FOUR_NOTIFIED   = gameState?._LEVEL_FOUR_NOTIFIED  || false;
 
-        this.bus           = new EventBus();
+        this.bus                    = new EventBus();
+
+        // Do the migration if required. We need to migrate if no version stored in localStorage.
+        //
+        if (!gameState.version || (this.version > gameState.version )) {
+            let loadedVersion = gameState.version || 1;
+            console.log(`Running migrations from loaded version ${loadedVersion} to current version ${this.version}`);
+            MIGRATIONS
+                .filter(m => m.fromVersion >= loadedVersion && m.toVersion <= this.version) // Filter relevant migrations
+                .sort((a, b) => a.fromVersion - b.fromVersion) // Ensure correct order
+                .forEach(m => {
+                    console.log(`Applying migration V${m.fromVersion} to V${m.toVersion}`);
+                    m.apply(this); // Pass 'this' (the ClickerModel instance) to the migration
+                });
+        }
 
         // Start all of the timers that wre running before if there is state saved 
         // in localStorage.
@@ -136,6 +174,7 @@ export class ClickerModel extends Reactive {
          }
       });
       browser.localStorage.setItem ("gameState", JSON.stringify({
+         version               : this.version,
          clicks                : this.clicks,
          clickBots             : this.clickBots,
          clickBigBots          : this.clickBigBots,
